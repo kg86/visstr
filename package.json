@@ -1,0 +1,22 @@
+{
+  "name": "visstr",
+  "version": "0.0.1",
+  "description": "String Visualizer",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.8"
+  },
+  "devDependencies": {
+    "prettier": "1.18.2",
+    "ts-loader": "^6.1.0",
+    "typedoc": "^0.15.0",
+    "typedoc-webpack-plugin": "^1.1.4",
+    "typescript": "^3.6.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Keisuke Goto",
+  "license": "MIT"
+}
