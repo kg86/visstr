@@ -8,6 +8,8 @@
     "webpack-cli": "^3.3.8"
   },
   "devDependencies": {
+    "@types/color-convert": "^1.9.0",
+    "color-convert": "^2.0.1",
     "prettier": "1.18.2",
     "ts-loader": "^6.1.0",
     "typedoc": "^0.15.0",
