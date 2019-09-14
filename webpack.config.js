@@ -40,7 +40,7 @@ const configLibrary = {
   },
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, '_bundles'),
+    path: path.resolve(__dirname, 'bundles'),
     library: 'visstr',
     libraryTarget: 'umd',
     umdNamedDefine: true,
