@@ -22,5 +22,31 @@
       // draw the occurrences.
       vstr.draw(s, range_groups)
     </script>
+    <br />
+
+    The figure of the above is drawn by the following source code.<br />
+    The original code is
+    <a href="https://github.com/kg86/visstr/dist/vis_str_demo_occ.html">here</a
+    >.<br />
+    See also
+    <a href="https://github.com/kg86/visstr">the visstr repository</a>.
+    <pre style="width: 400px; text-align: left; margin: auto">
+
+      const visstr = window.visstr
+
+      const canvas = document.querySelector('#canvas')
+      // input string
+      const s = 'abaababaabaab'
+      // create visstr object.
+      const vstr = new visstr.VisStr(canvas, s)
+      // create occurrences of aba.
+      const occ_aba = [[0, 2], [3, 5], [5, 7], [8, 10]]
+      // add line style and color.
+      const ranges = vstr.makeRanges(occ_aba, 'arrow', '#ff0000')
+      // make group so that they are not overlap with each others.
+      const range_groups = vstr.nonOverlapRangeIdxs(ranges)
+      // draw the occurrences.
+      vstr.draw(s, range_groups)
+    </pre>
   </body>
 </html>
