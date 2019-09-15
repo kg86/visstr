@@ -19,6 +19,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Keisuke Goto",
+  "author": "GOTO Keisuke",
   "license": "MIT"
 }
