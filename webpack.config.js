@@ -21,9 +21,7 @@ const configDemo = {
   module: {
     rules: [
       {
-        // 拡張子 .ts の場合
         test: /\.ts$/,
-        // TypeScript をコンパイルする
         use: 'ts-loader',
       },
     ],
@@ -52,9 +50,7 @@ const configLibrary = {
   module: {
     rules: [
       {
-        // 拡張子 .ts の場合
         test: /\.ts$/,
-        // TypeScript をコンパイルする
         use: 'ts-loader',
       },
     ],
