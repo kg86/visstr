@@ -53,18 +53,15 @@ export class VisStr {
   /**
    *
    * @param canvas HTMLCanvasElement
-   * @param input_str input string
    * @param font_size font size
    * @param font_type font name
    */
   constructor(
     canvas: HTMLCanvasElement,
-    input_str: string,
     font_size = 32,
     font_type = 'Courier',
   ) {
     this.canvas = canvas
-    this.input_str = input_str
     this.font_size = font_size
     this.font_size_half = this.font_size / 2
     this.font_type = font_type
@@ -280,20 +277,20 @@ export class VisStr {
   /**
    * Draw an input string.
    */
-  drawInputStr() {
+  drawInputStr(input_str: string) {
     let index = ['i']
-    for (let i = 0; i < this.input_str.length; i++) index.push('' + i)
+    for (let i = 0; i < input_str.length; i++) index.push('' + i)
     let r = {
       style: 'str',
       color: '#000000',
       beg: -1,
-      end: this.input_str.length - 1,
+      end: input_str.length - 1,
       str: index,
     }
     this.drawRange(r, this.str_y - this.font_size - this.font_size_half)
     const chars = ['Str']
-    for (let i = 0; i < this.input_str.length; i++)
-      chars.push(this.input_str.substring(i, i + 1))
+    for (let i = 0; i < input_str.length; i++)
+      chars.push(input_str.substring(i, i + 1))
     r.str = chars
     this.drawRange(r, this.str_y - this.font_size_half)
   }
@@ -337,7 +334,7 @@ export class VisStr {
     this.ctx.textAlign = 'center'
     this.ctx.lineWidth = 3
     this.ctx.font = this.font_size + 'px ' + this.font_type
-    this.drawInputStr()
+    this.drawInputStr(input_str)
     this.drawRanges(rss)
   }
 

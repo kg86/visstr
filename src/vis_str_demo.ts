@@ -194,7 +194,7 @@ const draw = (e: Event) => {
   // get canvas
   const canvas = document.querySelector('#canvas') as HTMLCanvasElement
   // canvas.width = window.innerWidth - 50
-  const visStr = new VisStr(canvas, input_str, (font_size = font_size))
+  const visStr = new VisStr(canvas, (font_size = font_size))
 
   // compute ranges
   let rangesp: RangeSimple[] = []
