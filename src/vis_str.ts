@@ -385,7 +385,7 @@ export class VisStr {
    * Return the grouped ranges that each contains non overlapping ranges.
    * @param rs The range list.
    */
-  nonOverlapRangeIdxs(rs: Range[]): Range[][] {
+  nonOverlapRanges(rs: Range[]): Range[][] {
     return this.nonOverlapObjs<Range>(rs, r => [r.beg, r.end])
   }
 
@@ -393,7 +393,7 @@ export class VisStr {
    * Return the grouped ranges that each contains non overlapping ranges.
    * @param rs The range list.
    */
-  nonOverlapRanges(rs: RangeSimple[]): RangeSimple[][] {
+  nonOverlapRangesSimple(rs: RangeSimple[]): RangeSimple[][] {
     return this.nonOverlapObjs<RangeSimple>(rs, x => [x[0], x[1]])
   }
 

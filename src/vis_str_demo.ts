@@ -207,7 +207,7 @@ const draw = (e: Event) => {
       rangesp = enumPalindromes(input_str) as RangeSimple[]
     }
     console.log('rangesp', rangesp)
-    ranges_group = visStr.nonOverlapRanges(rangesp)
+    ranges_group = visStr.nonOverlapRangesSimple(rangesp)
     console.log('range_group', ranges_group)
     ranges = visStr.makeGroupRangesAutoColor(ranges_group, range_style)
     console.log('rangesp', ranges)
@@ -220,7 +220,7 @@ const draw = (e: Event) => {
     else if (visualize === 'max_repeat')
       ranges_group = enumIfGroup(input_str, isMaxRepeat)
     ranges = visStr.makeGroupRangesAutoColor(ranges_group, range_style)
-    ranges = flat(ranges.map(x => visStr.nonOverlapRangeIdxs(x)))
+    ranges = flat(ranges.map(x => visStr.nonOverlapRanges(x)))
   }
 
   visStr.draw(input_str, ranges)

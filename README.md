@@ -37,7 +37,7 @@ const occ_aba = [[0, 2], [3, 5], [5, 7], [8, 10]]
 // add line style and color.
 const ranges = vstr.makeRanges(occ_aba, 'arrow', '#ff0000')
 // make group so that they are not overlap with each others.
-const range_groups = vstr.nonOverlapRangeIdxs(ranges)
+const range_groups = vstr.nonOverlapRanges(ranges)
 ```
 
 Draw the range list by `vstr.draw`.
