@@ -101,46 +101,11 @@ export class VisStr {
   }
 
   /**
-   * Draw a given string and ranges.
-   * @param input_str Input string to draw.
-   * @param rss The ranges to draw which are related to a given string `input_str`
+   * Return the height of a given range.
+   * @param r A range.
    */
-  draw(input_str: string, rss: Range[][]) {
-    let range_bound = [-1, input_str.length - 1]
-    rss.forEach(rs =>
-      rs.forEach(
-        r =>
-          (range_bound = [
-            Math.min(range_bound[0], r.beg),
-            Math.max(range_bound[1], r.end),
-          ]),
-      ),
-    )
-    this.str_x = this.font_size + Math.abs(range_bound[0]) * this.font_size
-    this.canvas.width = (range_bound[1] - range_bound[0] + 2) * this.font_size
-    this.canvas.height =
-      this.str_y +
-      this.font_size_half +
-      rss.reduce(
-        (acm, rs) => acm + Math.max(...rs.map(r => this.rangeHeight(r))),
-        0,
-      )
-
-    // DPI settings
-    const dpr = window.devicePixelRatio || 1
-    const rect = this.canvas.getBoundingClientRect()
-    // console.log('dpr', dpr, ' rect', rect)
-    this.canvas.width *= dpr
-    this.canvas.height *= dpr
-    this.ctx.scale(dpr, dpr)
-    this.canvas.style.width = this.canvas.width / dpr + 'px'
-
-    this.canvas.style.height = this.canvas.height / dpr + 'px'
-    this.ctx.textAlign = 'center'
-    this.ctx.lineWidth = 3
-    this.ctx.font = this.font_size + 'px ' + this.font_type
-    this.drawInputStr()
-    this.drawRanges(rss)
+  rangeHeight(r: Range): number {
+    return r.style === 'str' ? this.font_size : Math.round(this.font_size * 0.5)
   }
 
   /**
@@ -239,6 +204,27 @@ export class VisStr {
   }
 
   /**
+   * Draw strings.
+   * @param r A range to draw strings.
+   * @param y The y-coorinate to draw range `r`.
+   */
+  drawStr(r: Range, y: number) {
+    for (let i = 0; i < r.str.length; i++) {
+      const c = r.str[i]
+      const cx = this.str_x + (r.beg + i) * this.font_size
+      this.ctx.fillText(c, cx, y + this.font_size * 0.3, this.font_size)
+      this.ctx.beginPath()
+      this.ctx.rect(
+        cx - this.font_size_half,
+        y - this.font_size_half,
+        this.font_size,
+        this.font_size,
+      )
+      this.ctx.stroke()
+    }
+  }
+
+  /**
    * Draw range.
    * @param r A range to draw.
    * @param y A y-coordinate to draw `r`.
@@ -277,14 +263,6 @@ export class VisStr {
   }
 
   /**
-   * Return the height of a given range.
-   * @param r A range.
-   */
-  rangeHeight(r: Range): number {
-    return r.style === 'str' ? this.font_size : Math.round(this.font_size * 0.5)
-  }
-
-  /**
    * Draw ranges.
    * @param range_rows Ranges to draw.
    */
@@ -296,27 +274,6 @@ export class VisStr {
         this.drawRange(range, ypx + height / 2)
       }
       ypx += height
-    }
-  }
-
-  /**
-   * Draw strings.
-   * @param r A range to draw strings.
-   * @param y The y-coorinate to draw range `r`.
-   */
-  drawStr(r: Range, y: number) {
-    for (let i = 0; i < r.str.length; i++) {
-      const c = r.str[i]
-      const cx = this.str_x + (r.beg + i) * this.font_size
-      this.ctx.fillText(c, cx, y + this.font_size * 0.3, this.font_size)
-      this.ctx.beginPath()
-      this.ctx.rect(
-        cx - this.font_size_half,
-        y - this.font_size_half,
-        this.font_size,
-        this.font_size,
-      )
-      this.ctx.stroke()
     }
   }
 
@@ -339,6 +296,49 @@ export class VisStr {
       chars.push(this.input_str.substring(i, i + 1))
     r.str = chars
     this.drawRange(r, this.str_y - this.font_size_half)
+  }
+
+  /**
+   * Draw a given string and ranges.
+   * @param input_str Input string to draw.
+   * @param rss The ranges to draw which are related to a given string `input_str`
+   */
+  draw(input_str: string, rss: Range[][]) {
+    let range_bound = [-1, input_str.length - 1]
+    rss.forEach(rs =>
+      rs.forEach(
+        r =>
+          (range_bound = [
+            Math.min(range_bound[0], r.beg),
+            Math.max(range_bound[1], r.end),
+          ]),
+      ),
+    )
+    this.str_x = this.font_size + Math.abs(range_bound[0]) * this.font_size
+    this.canvas.width = (range_bound[1] - range_bound[0] + 2) * this.font_size
+    this.canvas.height =
+      this.str_y +
+      this.font_size_half +
+      rss.reduce(
+        (acm, rs) => acm + Math.max(...rs.map(r => this.rangeHeight(r))),
+        0,
+      )
+
+    // DPI settings
+    const dpr = window.devicePixelRatio || 1
+    const rect = this.canvas.getBoundingClientRect()
+    // console.log('dpr', dpr, ' rect', rect)
+    this.canvas.width *= dpr
+    this.canvas.height *= dpr
+    this.ctx.scale(dpr, dpr)
+    this.canvas.style.width = this.canvas.width / dpr + 'px'
+
+    this.canvas.style.height = this.canvas.height / dpr + 'px'
+    this.ctx.textAlign = 'center'
+    this.ctx.lineWidth = 3
+    this.ctx.font = this.font_size + 'px ' + this.font_type
+    this.drawInputStr()
+    this.drawRanges(rss)
   }
 
   /**
