@@ -12,8 +12,8 @@ Documentation is [here](https://kg86.github.io/visstr/docs/index.html)
 
 ## Usage
 
-Put a canvas in your html.
-Import `vis_str.js` like the following.
+Put a canvas in your html, and then import `vis_str.js` like the following.
+(`vis_str.js` is hosted in `./bundles` in this repository.)
 ```html
 <canvas id="canvas" style="border:1px solid #000000;"> </canvas>
 <script type="text/javascript" src="./vis_str.js"></script>
@@ -51,3 +51,14 @@ The canvas draws the range list as following.
 ![](others/occ_aba.png)
 
 See [the demo](https://kg86.github.io/visstr/dist/vis_str_demo_occ.html).
+
+## Compile
+
+Run the following commands.
+
+```bash
+$ git clone https://github.com/kg86/visstr.git
+$ npm install
+$ node_modules/.bin/webpack
+```
+Libraries are output in `./bundles` (UMD) and `./lib` (ES6 + source + .d.ts).
