@@ -23,7 +23,7 @@ const canvas = document.querySelector('#canvas')
 // input string
 const s = 'abaababaabaab'
 // create visstr object.
-const vstr = new visstr.VisStr(canvas, s)
+const vstr = new visstr.VisStr(canvas)
 ```
 
 Create an range list you want to draw, and add line style and color, and then groups them so that ehy are not overlap with each others.
