@@ -8,7 +8,7 @@ The following image visualizes all palindromes that occurs as substrings in "mis
 
 See [other demos](https://kg86.github.io/visstr/dist/vis_str_demo.html).
 
-Documentation is [here](https://kg86.github.io/visstr/docs/index.html)
+Documentation is [here](https://kg86.github.io/visstr/docs/index.html).
 
 ## Usage
 
