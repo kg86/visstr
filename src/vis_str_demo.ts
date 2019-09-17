@@ -2,16 +2,16 @@ import { VisStr, RangeSimple, Range } from './vis_str'
 
 const substrings = (str: string): string[] => {
   const n = str.length
-  let res = {}
+  let res = new Set<string>()
   for (let i = 0; i < n; i++) {
-    for (let j = i + 1; j <= n; j++) res[str.substring(i, j)] = true
+    for (let j = i + 1; j <= n; j++) res.add(str.substring(i, j))
   }
-  return Object.keys(res)
+  return [...res.keys()]
 }
 
 const findAll = (str: string, pat: string): RangeSimple[] => {
   const m = pat.length
-  let res = []
+  let res: RangeSimple[] = []
   let pos = str.indexOf(pat)
   while (pos !== -1) {
     res.push([pos, pos + m - 1])
@@ -29,7 +29,7 @@ const isPalindrome = (str: string): boolean => {
 
 const enumPalindromes = (str: string): RangeSimple[] => {
   const n = str.length
-  let res = []
+  let res: RangeSimple[] = []
   for (let len = 1; len < n; len++) {
     for (let beg = 0; beg + len <= n; beg++) {
       if (isPalindrome(str.substring(beg, beg + len)))
@@ -94,7 +94,7 @@ const isRun = (s: string, beg: number, p: number): boolean => {
 
 const enumRuns = (s: string): RangeSimple[] => {
   const n = s.length
-  let res = []
+  let res: RangeSimple[] = []
   let rmap = new Set<string>()
   for (let p = 1; p < n; p++) {
     for (let beg = 0; beg + 2 * p <= n; beg++) {
@@ -115,14 +115,14 @@ const enumRuns = (s: string): RangeSimple[] => {
 }
 
 const leftExtensions = (str: string, pat: string): string[] => {
-  let res = {}
+  let res = new Set<string>()
   let fromIdx = 1
   let pos = str.indexOf(pat, fromIdx)
   while (pos !== -1) {
-    res[str[pos - 1]] = true
+    res.add(str[pos - 1])
     pos = str.indexOf(pat, pos + 1)
   }
-  return Object.keys(res)
+  return [...res.keys()]
 }
 
 const reverse = (str: string): string => {
@@ -156,7 +156,7 @@ const lz77 = (str: string, show_factorid: number = 1): RangeSimple[][] => {
   const res: RangeSimple[][] = []
 
   for (let i = 0; i < n; ) {
-    let ranges = []
+    let ranges: RangeSimple[] = []
     if (occs[i] === -1) {
       ranges = [[i, i, [str[i]]]]
       i += 1
@@ -227,8 +227,8 @@ const draw = (e: Event) => {
 
   // compute ranges
   let rangesp: RangeSimple[] = []
-  let ranges_group: RangeSimple[][]
-  let ranges: Range[][]
+  let ranges_group: RangeSimple[][] = []
+  let ranges: Range[][] = []
   if (visualize === 'runs' || visualize === 'palindromes') {
     if (visualize === 'runs') {
       rangesp = enumRuns(input_str) as RangeSimple[]
@@ -264,9 +264,9 @@ const selectorAddEvent = (selector: string, event: string, func: any) => {
 }
 
 const main = () => {
-  const input_text = document.getElementById('input_str')
-  input_text.addEventListener('input', draw)
-  input_text.addEventListener('propertychange', draw)
+  const input_str = document.getElementById('input_str') as HTMLElement
+  input_str.addEventListener('input', draw)
+  input_str.addEventListener('propertychange', draw)
 
   // add event for radio buttons
   selectorAddEvent('[name=font_size]', 'click', draw)
@@ -275,7 +275,7 @@ const main = () => {
   selectorAddEvent('[name=visualize]', 'click', draw)
 
   // draw initially.
-  input_text.dispatchEvent(
+  input_str.dispatchEvent(
     new CustomEvent('propertychange', { detail: 'init event' }),
   )
 }

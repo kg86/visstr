@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
     "sourceMap": true,
+    "strict": true,
     "declaration": true,
     "target": "es6",
     "module": "CommonJS",
     "lib": ["es6", "dom"],
     "outDir": "lib"
   },
-  "files": ["src/vis_str.ts"]
+  "files": ["src/vis_str.ts", "src/vis_str_demo.ts"],
 }

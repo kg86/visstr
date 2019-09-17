@@ -91,7 +91,7 @@
 <span class="hljs-comment">// add line style and color.</span>
 <span class="hljs-keyword">const</span> ranges = vstr.makeRanges(occ_aba, <span class="hljs-string">'arrow'</span>, <span class="hljs-string">'#ff0000'</span>)
 <span class="hljs-comment">// make group so that they are not overlap with each others.</span>
-<span class="hljs-keyword">const</span> range_groups = vstr.nonOverlapRangeIdxs(ranges)</code></pre>
+<span class="hljs-keyword">const</span> range_groups = vstr.nonOverlapRanges(ranges)</code></pre>
 				<p>Draw the range list by <code>vstr.draw</code>.</p>
 				<pre><code class="language-js"><span class="hljs-comment">// draw the occurrences.</span>
 vstr.draw(s, range_groups)</code></pre>

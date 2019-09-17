@@ -40,7 +40,6 @@ export interface RangePx {
 export class VisStr {
   private canvas: HTMLCanvasElement
   private ctx: CanvasRenderingContext2D
-  private input_str: string
   private str_x: number
   private str_y: number
   private font_size: number
@@ -65,7 +64,7 @@ export class VisStr {
     this.font_size = font_size
     this.font_size_half = this.font_size / 2
     this.font_type = font_type
-    this.ctx = canvas.getContext('2d')
+    this.ctx = canvas.getContext('2d') as CanvasRenderingContext2D
     this.str_x = this.font_size
     this.str_y = this.font_size * 2 + this.font_size_half
     this.range_beg_offset = -this.font_size / 4
@@ -206,8 +205,9 @@ export class VisStr {
    * @param y The y-coorinate to draw range `r`.
    */
   drawStr(r: Range, y: number) {
-    for (let i = 0; i < r.str.length; i++) {
-      const c = r.str[i]
+    const rstr = r.str as string[]
+    for (let i = 0; i < rstr.length; i++) {
+      const c = rstr[i]
       const cx = this.str_x + (r.beg + i) * this.font_size
       this.ctx.fillText(c, cx, y + this.font_size * 0.3, this.font_size)
       this.ctx.beginPath()
@@ -351,14 +351,14 @@ export class VisStr {
    * @param Ts The range list.
    * @param rangef The function to return the tuple beginning index and ending index of a given range `Ts[i]`.
    */
-  nonOverlapObjs<T>(Ts: T[], rangef: (T) => number[]): T[][] {
+  nonOverlapObjs<T>(Ts: T[], rangef: (arg0: T) => number[]): T[][] {
     if (Ts.length <= 0) return []
     const ends = Ts.map(t => rangef(t)[1])
     const n = Math.max(...ends) + 1
     let used = new Array<boolean>(n)
     used.fill(false)
     let res = []
-    let rows = []
+    let rows: T[] = []
     for (const t of Ts) {
       // check whether or not a range can be inserted to the current row.
       let used_any = false
