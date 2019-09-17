@@ -145,6 +145,30 @@ const isMaxRepeat = (str: string, pat: string): boolean => {
   return isLeftMaximal(str, pat) && isRightMaximal(str, pat)
 }
 
+const lz77 = (str: string, show_factorid: number = 1): RangeSimple[][] => {
+  const n = str.length
+  const [occs, lens] = prevOccLPF(str)
+  const res: RangeSimple[][] = []
+
+  for (let i = 0; i < n; ) {
+    let ranges = []
+    if (occs[i] === -1) {
+      ranges = [[i, i, [str[i]]]]
+      i += 1
+    } else {
+      ranges = [[occs[i], occs[i] + lens[i] - 1], [i, i + lens[i] - 1]]
+      i += lens[i]
+    }
+    if (show_factorid >= 0) {
+      const last_end = ranges[ranges.length - 1][1]
+      ranges.push([last_end + 1, last_end + 1, ['f' + show_factorid]])
+      show_factorid++
+    }
+    res.push(ranges)
+  }
+  return res
+}
+
 const enumIf = (
   str: string,
   check: (s: string, p: string) => boolean,
@@ -219,6 +243,7 @@ const draw = (e: Event) => {
       ranges_group = enumIfGroup(input_str, isRightMaximal)
     else if (visualize === 'max_repeat')
       ranges_group = enumIfGroup(input_str, isMaxRepeat)
+    else if (visualize == 'lz77') ranges_group = lz77(input_str)
     ranges = visStr.makeGroupRangesAutoColor(ranges_group, range_style)
     ranges = flat(ranges.map(x => visStr.nonOverlapRanges(x)))
   }
