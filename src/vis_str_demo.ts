@@ -95,6 +95,7 @@ const isRun = (s: string, beg: number, p: number): boolean => {
 const enumRuns = (s: string): RangeSimple[] => {
   const n = s.length
   let res = []
+  let rmap = new Set<string>()
   for (let p = 1; p < n; p++) {
     for (let beg = 0; beg + 2 * p <= n; beg++) {
       if (isRun(s, beg, p)) {
@@ -102,7 +103,11 @@ const enumRuns = (s: string): RangeSimple[] => {
         while (match < n && s[beg + (match % p)] == s[beg + match]) {
           match++
         }
-        res.push([beg, beg + match - 1, p])
+        const key = beg + ',' + (beg + match - 1)
+        if (!rmap.has(key)) {
+          res.push([beg, beg + match - 1, p])
+          rmap.add(key)
+        }
       }
     }
   }
