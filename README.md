@@ -1,6 +1,6 @@
 # VisStr
 
-VisStr is a library to visualize a string and its several propeties, such as repetitions, and redundancies.
+VisStr is a library to visualize a string and its several propeties such as repetitions, occurences, and redundancies.
 
 The following image visualizes all palindromes that occurs as substrings in "mississippi$".
 
