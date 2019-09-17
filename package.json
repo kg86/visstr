@@ -1,6 +1,6 @@
 {
   "name": "visstr",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "String Visualizer",
   "main": "webpack.config.js",
   "dependencies": {
@@ -17,6 +17,8 @@
     "typescript": "^3.6.3"
   },
   "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "GOTO Keisuke",
