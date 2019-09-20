@@ -174,6 +174,33 @@ const lz77 = (str: string, show_factorid: number = 1): RangeSimple[][] => {
   return res
 }
 
+const lz78 = (str: string, show_factorid = 1): RangeSimple[][] => {
+  let d = new Map<string, number>()
+  let res: RangeSimple[][] = []
+  for (var i = 0; i < str.length; ) {
+    let j = i + 1
+    while (j <= str.length && d.has(str.substring(i, j))) {
+      j++
+    }
+    let row: RangeSimple[] = []
+    if (j - i > 1) {
+      const prev = d.get(str.substring(i, j - 1)) as number
+      row.push([prev, prev + (j - i - 2)])
+      row.push([i, j - 2])
+    }
+    if (j < str.length) {
+      row.push([j - 1, j, [str[j - 1], 'f' + show_factorid]])
+    } else {
+      row.push([j - 1, j - 1, ['f' + show_factorid]])
+    }
+    show_factorid++
+    res.push(row)
+    d.set(str.substring(i, j), i)
+    i = j
+  }
+  return res
+}
+
 const enumIf = (
   str: string,
   check: (s: string, p: string) => boolean,
@@ -249,6 +276,7 @@ const draw = (e: Event) => {
     else if (visualize === 'max_repeat')
       ranges_group = enumIfGroup(input_str, isMaxRepeat)
     else if (visualize == 'lz77') ranges_group = lz77(input_str)
+    else if (visualize == 'lz78') ranges_group = lz78(input_str)
     ranges = visStr.makeGroupRangesAutoColor(ranges_group, range_style)
     ranges = flat(ranges.map(x => visStr.nonOverlapRanges(x)))
   }
