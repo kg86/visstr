@@ -1,6 +1,6 @@
 # VisStr
 
-VisStr is a library to visualize a string and its several propeties such as repetitions, occurences, and redundancies.
+VisStr is a library to visualize a string and its properties such as repetitions, occurrences, and redundancies.
 
 The following image visualizes all palindromes that occurs as substrings in "mississippi$".
 
@@ -30,7 +30,7 @@ const s = 'abaababaabaab'
 const vstr = new visstr.VisStr(canvas)
 ```
 
-Create an range list you want to draw, and add line style and color, and then groups them so that ehy are not overlap with each others.
+Create a range list you want to draw, and add line style and color, and then group them so that they do not overlap with each other.
 ```js
 // create occurrences of aba.
 const occ_aba = [[0, 2], [3, 5], [5, 7], [8, 10]]
@@ -58,6 +58,7 @@ Run the following commands.
 
 ```bash
 $ git clone https://github.com/kg86/visstr.git
+$ cd visstr
 $ npm install
 $ node_modules/.bin/webpack
 ```
