@@ -26,3 +26,9 @@ jobs:
       run: |
         npm install
         npm run build --if-present
+
+    - name: push
+      run: |
+        git add dist
+        git commit --allow-empty -m "hoge"
+        git push origin gh-pages
