@@ -26,10 +26,3 @@ jobs:
       run: |
         npm install
         npm run build --if-present
-
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v2.3.1
-      env:
-        PERSONAL_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        PUBLISH_BRANCH: gh-pages
-        PUBLISH_DIR: ./dist
