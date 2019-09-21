@@ -15,20 +15,23 @@ jobs:
       with:
         node-version: 12.x
 
+    - name: npm install, build, and test
+      run: |
+        npm install
+        npm run build --if-present
+        webpack
+
+    - name: Move Files
+      run: |
+        mkdir public
+        mv dist public/
+        mv docs public/
+        mv bundles public/
+        mv .config.yml public/
+
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v2.3.1
       env:
         PERSONAL_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         PUBLISH_BRANCH: gh-pages
-        PUBLISH_DIR: ./
-
-    - name: npm install, build, and test
-      run: |
-        npm install
-        npm run build --if-present
-
-    - name: push
-      run: |
-        git add dist
-        git commit --allow-empty -m "hoge"
-        git push origin gh-pages
+        PUBLISH_DIR: ./public
