@@ -28,6 +28,7 @@ jobs:
         mv docs public/
         mv bundles public/
         mv _config.yml public/
+        mv README.md public/
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v2.3.1
