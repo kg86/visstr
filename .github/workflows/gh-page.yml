@@ -16,5 +16,5 @@ jobs:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         BASE_BRANCH: gh_page_auto_deploy # The branch the action should deploy from.
         BRANCH: gh-pages # The branch the action should deploy to.
-        FOLDER: lib # The folder the action should deploy.
+        FOLDER: . # The folder the action should deploy.
         BUILD_SCRIPT: npm install && npm run-script build # The build script the action should run prior to deploying.
