@@ -84,6 +84,27 @@ const enumPrevOccLPF = (str: string): RangeSimple[][] => {
   return res
 }
 
+const isSquare = (s: string, beg: number, p: number) : boolean => {
+  for(let i = 0; i < p; i++){
+    if(s[beg+i] != s[beg+p+i]) return false
+  }
+  return true
+}
+const enumSquares = (s: string): RangeSimple[] => {
+  const n = s.length
+  let res: RangeSimple[] = []
+  for(let p = 1; p < n; p++){
+    for(let offset = 0; offset < 2*p; offset++){
+      for(let beg = offset; beg < n - 2*p+1; beg += 2*p){
+        if(isSquare(s,beg,p)){
+          res.push([beg, beg+2*p-1, p])
+        }
+      }
+    }
+  }
+  return res;
+}
+
 const isRun = (s: string, beg: number, p: number): boolean => {
   if (beg > 0 && s[beg - 1] == s[beg + p - 1]) return false
   for (let i = 0; i < p; i++) {
@@ -229,11 +250,13 @@ const draw = (e: Event) => {
   let rangesp: RangeSimple[] = []
   let ranges_group: RangeSimple[][] = []
   let ranges: Range[][] = []
-  if (visualize === 'runs' || visualize === 'palindromes') {
+  if (visualize === 'runs' || visualize === 'palindromes' || visualize === 'squares') {
     if (visualize === 'runs') {
       rangesp = enumRuns(input_str) as RangeSimple[]
     } else if (visualize === 'palindromes') {
       rangesp = enumPalindromes(input_str) as RangeSimple[]
+    } else if(visualize === 'squares'){
+      rangesp = enumSquares(input_str) as RangeSimple[]
     }
     console.log('rangesp', rangesp)
     ranges_group = visStr.nonOverlapRangesSimple(rangesp)
