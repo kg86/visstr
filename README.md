@@ -6,14 +6,12 @@ The following image visualizes all palindromes that occurs as substrings in "mis
 
 ![](others/palindromes.png)
 
-See [other demos](https://kg86.github.io/visstr/dist/vis_str_demo.html).
-
-Documentation is [here](https://kg86.github.io/visstr/docs/index.html).
+See [demos](https://kg86.github.io/visstr/dist/vis_str_demo.html) and [API document](https://kg86.github.io/visstr/docs/index.html).
 
 ## Usage
 
 Put a canvas in your html, and then import `vis_str.js` like the following.
-(`vis_str.js` is hosted in `./bundles` in this repository.)
+(`vis_str.js` is output to `./bundles` by compile.)
 ```html
 <canvas id="canvas" style="border:1px solid #000000;"> </canvas>
 <script type="text/javascript" src="./vis_str.js"></script>
