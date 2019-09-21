@@ -21,6 +21,7 @@ jobs:
         mkdir public
         mv dist public/
         mv docs public/
+        mv others pubilc/
         mv bundles public/
         mv _config.yml public/
         mv README.md public/
