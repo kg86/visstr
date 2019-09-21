@@ -6,7 +6,7 @@ The following image visualizes all palindromes that occurs as substrings in "mis
 
 ![](others/palindromes.png)
 
-See [demos](https://kg86.github.io/visstr/dist/vis_str_demo.html) and [API document](https://kg86.github.io/visstr/docs/index.html).
+See [demos](https://kg86.github.io/visstr/dist/vis_str_demo.html) and [API documents](https://kg86.github.io/visstr/docs/index.html).
 
 ## Usage
 
