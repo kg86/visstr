@@ -84,25 +84,25 @@ const enumPrevOccLPF = (str: string): RangeSimple[][] => {
   return res
 }
 
-const isSquare = (s: string, beg: number, p: number) : boolean => {
-  for(let i = 0; i < p; i++){
-    if(s[beg+i] != s[beg+p+i]) return false
+const isSquare = (s: string, beg: number, p: number): boolean => {
+  for (let i = 0; i < p; i++) {
+    if (s[beg + i] != s[beg + p + i]) return false
   }
   return true
 }
 const enumSquares = (s: string): RangeSimple[] => {
   const n = s.length
   let res: RangeSimple[] = []
-  for(let p = 1; p < n; p++){
-    for(let offset = 0; offset < 2*p; offset++){
-      for(let beg = offset; beg < n - 2*p+1; beg += 2*p){
-        if(isSquare(s,beg,p)){
-          res.push([beg, beg+2*p-1, p])
+  for (let p = 1; p < n; p++) {
+    for (let offset = 0; offset < 2 * p; offset++) {
+      for (let beg = offset; beg < n - 2 * p + 1; beg += 2 * p) {
+        if (isSquare(s, beg, p)) {
+          res.push([beg, beg + 2 * p - 1, p])
         }
       }
     }
   }
-  return res;
+  return res
 }
 
 const isRun = (s: string, beg: number, p: number): boolean => {
@@ -222,6 +222,37 @@ const lz78 = (str: string, show_factorid = 1): RangeSimple[][] => {
   return res
 }
 
+// Duval's algorithm
+const lyndonFactorization = (str: string): RangeSimple[][] => {
+  let factor = (beg: number, i: number, end: number): RangeSimple[] => {
+    const len = end - i
+    const period = Math.floor((end - beg) / (end - i))
+    return [[beg, beg + len * period - 1, len]] as RangeSimple[]
+  }
+  let res: RangeSimple[][] = []
+  let i = 0
+  let beg = 0
+  let end = 1
+  while (end < str.length) {
+    if (str[i] === str[end]) {
+      i++
+      end++
+    } else if (str[i] < str[end]) {
+      // str[beg...end] is Lyndon string
+      i = beg
+      end++
+    } else {
+      // str[beg...end-1] is the longest prefix of str that is Lyndon string.
+      const f = factor(beg, i, end)
+      res.push(f)
+      i = beg = f[0][1] + 1
+      end++
+    }
+  }
+  res.push(factor(beg, i, end))
+  return res
+}
+
 const enumIf = (
   str: string,
   check: (s: string, p: string) => boolean,
@@ -277,12 +308,16 @@ const draw = (e: Event) => {
   let rangesp: RangeSimple[] = []
   let ranges_group: RangeSimple[][] = []
   let ranges: Range[][] = []
-  if (visualize === 'runs' || visualize === 'palindromes' || visualize === 'squares') {
+  if (
+    visualize === 'runs' ||
+    visualize === 'palindromes' ||
+    visualize === 'squares'
+  ) {
     if (visualize === 'runs') {
       rangesp = enumRuns(input_str) as RangeSimple[]
     } else if (visualize === 'palindromes') {
       rangesp = enumPalindromes(input_str) as RangeSimple[]
-    } else if(visualize === 'squares'){
+    } else if (visualize === 'squares') {
       rangesp = enumSquares(input_str) as RangeSimple[]
     }
     console.log('rangesp', rangesp)
@@ -300,6 +335,8 @@ const draw = (e: Event) => {
       ranges_group = enumIfGroup(input_str, isMaxRepeat)
     else if (visualize == 'lz77') ranges_group = lz77(input_str)
     else if (visualize == 'lz78') ranges_group = lz78(input_str)
+    else if (visualize == 'lyndon_factorization')
+      ranges_group = lyndonFactorization(input_str)
     ranges = visStr.makeGroupRangesAutoColor(ranges_group, range_style)
     ranges = flat(ranges.map(x => visStr.nonOverlapRanges(x)))
   }
