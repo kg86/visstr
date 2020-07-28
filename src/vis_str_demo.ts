@@ -223,17 +223,17 @@ const lz78 = (str: string, show_factorid = 1): RangeSimple[][] => {
 }
 
 // Duval's algorithm
-const lyndonFactorization = (str: string): RangeSimple[][] => {
-  let factor = (beg: number, i: number, end: number): RangeSimple[] => {
-    const len = end - i
-    const period = Math.floor((end - beg) / (end - i))
-    return [[beg, beg + len * period - 1, len]] as RangeSimple[]
-  }
-  let res: RangeSimple[][] = []
-  let i = 0
-  let beg = 0
-  let end = 1
-  while (end < str.length) {
+// find longest lyndon factor which starts at beg in str.
+// return [len, repeat], where
+// len is the length of the factor,
+// repeat is the maximum repeat of the factor.
+const findLongestLyndonFactor = (
+  str: string,
+  beg: number,
+): [number, number] => {
+  let i = beg
+  let end = beg + 1
+  while (end < str.length && str[i] <= str[end]) {
     if (str[i] === str[end]) {
       i++
       end++
@@ -241,15 +241,33 @@ const lyndonFactorization = (str: string): RangeSimple[][] => {
       // str[beg...end] is Lyndon string
       i = beg
       end++
-    } else {
-      // str[beg...end-1] is the longest prefix of str that is Lyndon string.
-      const f = factor(beg, i, end)
-      res.push(f)
-      i = beg = f[0][1] + 1
-      end++
     }
   }
-  res.push(factor(beg, i, end))
+  // str[beg...end-1] is the longest Lyndon prefix of str[beg...].
+  const len = end - i
+  const repeat = Math.floor((end - beg) / (end - i))
+  return [len, repeat]
+}
+
+const lyndonFactorization = (str: string): RangeSimple[][] => {
+  let res: RangeSimple[][] = []
+  let beg = 0
+
+  while (beg < str.length) {
+    const factor = findLongestLyndonFactor(str, beg)
+    const len_factor = factor[0] * factor[1]
+    res.push([[beg, beg + len_factor - 1, factor[0]]] as RangeSimple[])
+    beg += len_factor
+  }
+  return res
+}
+
+const lyndonArray = (str: string): RangeSimple[][] => {
+  const res: RangeSimple[][] = []
+  for (let i = 0; i < str.length; i++) {
+    const factor = findLongestLyndonFactor(str, i)
+    res.push([[i, i + factor[0] * factor[1] - 1, factor[0]]] as RangeSimple[])
+  }
   return res
 }
 
@@ -337,6 +355,7 @@ const draw = (e: Event) => {
     else if (visualize == 'lz78') ranges_group = lz78(input_str)
     else if (visualize == 'lyndon_factorization')
       ranges_group = lyndonFactorization(input_str)
+    else if (visualize == 'lyndon_array') ranges_group = lyndonArray(input_str)
     ranges = visStr.makeGroupRangesAutoColor(ranges_group, range_style)
     ranges = flat(ranges.map(x => visStr.nonOverlapRanges(x)))
   }
