@@ -224,11 +224,16 @@ const lz78 = (str: string, show_factorid = 1): RangeSimple[][] => {
 
 const isLyndon = (str: string): boolean => {
   for (let i = 1; i < str.length; i++) {
+    let lessthan = false
     for (let j = 0; j < str.length; j++) {
       const j2 = (i + j) % str.length
       if (str[j] > str[j2]) return false
-      else if (str[j] < str[j2]) break
+      else if (str[j] < str[j2]) {
+        lessthan = true
+        break
+      }
     }
+    if (!lessthan) return false
   }
   return true
 }
