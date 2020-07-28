@@ -222,6 +222,34 @@ const lz78 = (str: string, show_factorid = 1): RangeSimple[][] => {
   return res
 }
 
+const isLyndon = (str: string): boolean => {
+  for (let i = 1; i < str.length; i++) {
+    for (let j = 0; j < str.length; j++) {
+      const j2 = (i + j) % str.length
+      if (str[j] > str[j2]) return false
+      else if (str[j] < str[j2]) break
+    }
+  }
+  return true
+}
+
+// const enumLyndon = (str: string): RangeSimple[][] => {
+//   const check = (str: string, pat: string) => isLyndon(pat)
+//   return enumIfGroup(str, check)
+// }
+const enumLyndon = (str: string): RangeSimple[][] => {
+  const res: RangeSimple[][] = []
+  for (let len = 1; len <= str.length; len++) {
+    const group: RangeSimple[] = []
+    for (let i = 0; i + len <= str.length; i++) {
+      const sub = str.substr(i, len)
+      if (isLyndon(sub)) group.push([i, i + len - 1])
+    }
+    if (group.length > 0) res.push(group)
+  }
+  return res
+}
+
 // Duval's algorithm
 // find longest lyndon factor which starts at beg in str.
 // return [len, repeat], where
@@ -351,11 +379,12 @@ const draw = (e: Event) => {
       ranges_group = enumIfGroup(input_str, isRightMaximal)
     else if (visualize === 'max_repeat')
       ranges_group = enumIfGroup(input_str, isMaxRepeat)
-    else if (visualize == 'lz77') ranges_group = lz77(input_str)
-    else if (visualize == 'lz78') ranges_group = lz78(input_str)
-    else if (visualize == 'lyndon_factorization')
+    else if (visualize === 'lz77') ranges_group = lz77(input_str)
+    else if (visualize === 'lz78') ranges_group = lz78(input_str)
+    else if (visualize === 'lyndon_factorization')
       ranges_group = lyndonFactorization(input_str)
-    else if (visualize == 'lyndon_array') ranges_group = lyndonArray(input_str)
+    else if (visualize === 'lyndon_array') ranges_group = lyndonArray(input_str)
+    else if (visualize === 'enum_lyndon') ranges_group = enumLyndon(input_str)
     ranges = visStr.makeGroupRangesAutoColor(ranges_group, range_style)
     ranges = flat(ranges.map(x => visStr.nonOverlapRanges(x)))
   }
