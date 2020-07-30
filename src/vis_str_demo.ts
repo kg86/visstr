@@ -330,8 +330,6 @@ const rankArray = (str: string, sa?: number[]) => {
   if (sa === undefined) sa = suffixArray(str)
   const rank = Array(str.length)
   sa.forEach((pos, r) => (rank[pos] = r))
-  console.log('sa', sa)
-  console.log('rank', rank)
   return rank
 }
 
