@@ -299,7 +299,7 @@ const lyndonArray = (str: string): RangeSimple[][] => {
   const res: RangeSimple[][] = []
   for (let i = 0; i < str.length; i++) {
     const factor = findLongestLyndonFactor(str, i)
-    res.push([[i, i + factor[0] * factor[1] - 1, factor[0]]] as RangeSimple[])
+    res.push([[i, i + factor[0] - 1]] as RangeSimple[])
   }
   return res
 }
