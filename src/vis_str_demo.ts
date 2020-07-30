@@ -304,6 +304,22 @@ const lyndonArray = (str: string): RangeSimple[][] => {
   return res
 }
 
+// replace the characters to effective alphabet [0, sigma-1]
+// sigma is the number of distinct characters of given string
+// sigma must be less than 10
+const replaceEffectiveAlphabet = (str: string): string => {
+  const chars = new Set<string>()
+  for (let i = 0; i < str.length; i++) chars.add(str[i])
+  const arr = Array.from(chars.values())
+  arr.sort()
+  const rep = new Map<string, string>()
+  arr.map((c, i) => rep.set(c, i.toString()))
+  const reps = []
+
+  for (let i = 0; i < str.length; i++) reps.push(rep.get(str[i]))
+  return reps.join('')
+}
+
 const enumIf = (
   str: string,
   check: (s: string, p: string) => boolean,
@@ -348,7 +364,11 @@ const draw = (e: Event) => {
 
   // get input string
   const elm = document.querySelector('#input_str') as HTMLInputElement
-  const input_str = elm.value
+  let input_str = elm.value
+  const effective_alphabet = (document.getElementById(
+    'effective_alphabet',
+  ) as HTMLInputElement).checked
+  if (effective_alphabet) input_str = replaceEffectiveAlphabet(input_str)
 
   // get canvas
   const canvas = document.querySelector('#canvas') as HTMLCanvasElement
@@ -414,6 +434,7 @@ const main = () => {
   selectorAddEvent('[name=line_style]', 'click', draw)
   selectorAddEvent('[name=line_style_right]', 'click', draw)
   selectorAddEvent('[name=visualize]', 'click', draw)
+  selectorAddEvent('#effective_alphabet', 'click', draw)
 
   // draw initially.
   input_str.dispatchEvent(
