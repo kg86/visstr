@@ -307,17 +307,18 @@ const lyndonArray = (str: string): RangeSimple[][] => {
 // replace the characters to effective alphabet [0, sigma-1]
 // sigma is the number of distinct characters of given string
 // sigma must be less than 10
-const replaceEffectiveAlphabet = (str: string): string => {
+const replaceEffectiveAlphabet = (str: string): string[] => {
   const chars = new Set<string>()
   for (let i = 0; i < str.length; i++) chars.add(str[i])
   const arr = Array.from(chars.values())
   arr.sort()
   const rep = new Map<string, string>()
   arr.map((c, i) => rep.set(c, i.toString()))
-  const reps = []
+  const reps: string[] = []
 
-  for (let i = 0; i < str.length; i++) reps.push(rep.get(str[i]))
-  return reps.join('')
+  for (let i = 0; i < str.length; i++) reps.push(rep.get(str[i]) as string)
+  return reps
+  // return reps.join('')
 }
 
 const enumIf = (
@@ -365,10 +366,6 @@ const draw = (e: Event) => {
   // get input string
   const elm = document.querySelector('#input_str') as HTMLInputElement
   let input_str = elm.value
-  const effective_alphabet = (document.getElementById(
-    'effective_alphabet',
-  ) as HTMLInputElement).checked
-  if (effective_alphabet) input_str = replaceEffectiveAlphabet(input_str)
 
   // get canvas
   const canvas = document.querySelector('#canvas') as HTMLCanvasElement
@@ -379,6 +376,20 @@ const draw = (e: Event) => {
   let rangesp: RangeSimple[] = []
   let ranges_group: RangeSimple[][] = []
   let ranges: Range[][] = []
+
+  const effective_alphabet = (document.getElementById(
+    'effective_alphabet',
+  ) as HTMLInputElement).checked
+  if (effective_alphabet) {
+    ranges_group.push([
+      [
+        -1,
+        input_str.length - 1,
+        ['eStr', ...replaceEffectiveAlphabet(input_str)],
+      ],
+    ] as RangeSimple[])
+  }
+
   if (
     visualize === 'runs' ||
     visualize === 'palindromes' ||
@@ -392,24 +403,29 @@ const draw = (e: Event) => {
       rangesp = enumSquares(input_str) as RangeSimple[]
     }
     console.log('rangesp', rangesp)
-    ranges_group = visStr.nonOverlapRangesSimple(rangesp)
+    ranges_group = ranges_group.concat(visStr.nonOverlapRangesSimple(rangesp))
     console.log('range_group', ranges_group)
     ranges = visStr.makeGroupRangesAutoColor(ranges_group, range_style)
     console.log('rangesp', ranges)
   } else {
-    if (visualize === 'lpf') ranges_group = enumPrevOccLPF(input_str)
+    if (visualize === 'lpf')
+      ranges_group = ranges_group.concat(enumPrevOccLPF(input_str))
     else if (visualize === 'left_maximal')
-      ranges_group = enumIfGroup(input_str, isLeftMaximal)
+      ranges_group = ranges_group.concat(enumIfGroup(input_str, isLeftMaximal))
     else if (visualize === 'right_maximal')
-      ranges_group = enumIfGroup(input_str, isRightMaximal)
+      ranges_group = ranges_group.concat(enumIfGroup(input_str, isRightMaximal))
     else if (visualize === 'max_repeat')
-      ranges_group = enumIfGroup(input_str, isMaxRepeat)
-    else if (visualize === 'lz77') ranges_group = lz77(input_str)
-    else if (visualize === 'lz78') ranges_group = lz78(input_str)
+      ranges_group = ranges_group.concat(enumIfGroup(input_str, isMaxRepeat))
+    else if (visualize === 'lz77')
+      ranges_group = ranges_group.concat(lz77(input_str))
+    else if (visualize === 'lz78')
+      ranges_group = ranges_group.concat(lz78(input_str))
     else if (visualize === 'lyndon_factorization')
-      ranges_group = lyndonFactorization(input_str)
-    else if (visualize === 'lyndon_array') ranges_group = lyndonArray(input_str)
-    else if (visualize === 'enum_lyndon') ranges_group = enumLyndon(input_str)
+      ranges_group = ranges_group.concat(lyndonFactorization(input_str))
+    else if (visualize === 'lyndon_array')
+      ranges_group = ranges_group.concat(lyndonArray(input_str))
+    else if (visualize === 'enum_lyndon')
+      ranges_group = ranges_group.concat(enumLyndon(input_str))
     ranges = visStr.makeGroupRangesAutoColor(ranges_group, range_style)
     ranges = flat(ranges.map(x => visStr.nonOverlapRanges(x)))
   }
