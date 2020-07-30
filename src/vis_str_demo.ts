@@ -321,6 +321,20 @@ const replaceEffectiveAlphabet = (str: string): string[] => {
   // return reps.join('')
 }
 
+const suffixArray = (str: string): number[] => {
+  const suffixes = [...Array(str.length).keys()].map(i => str.substr(i))
+  suffixes.sort()
+  return suffixes.map(s => str.length - s.length)
+}
+const rankArray = (str: string, sa?: number[]) => {
+  if (sa === undefined) sa = suffixArray(str)
+  const rank = Array(str.length)
+  sa.forEach((pos, r) => (rank[pos] = r))
+  console.log('sa', sa)
+  console.log('rank', rank)
+  return rank
+}
+
 const enumIf = (
   str: string,
   check: (s: string, p: string) => boolean,
@@ -377,16 +391,25 @@ const draw = (e: Event) => {
   let ranges_group: RangeSimple[][] = []
   let ranges: Range[][] = []
 
-  const effective_alphabet = (document.getElementById(
+  const show_effective_alphabet = (document.getElementById(
     'effective_alphabet',
   ) as HTMLInputElement).checked
-  if (effective_alphabet) {
+  const show_rank_array = (document.getElementById(
+    'rank_array',
+  ) as HTMLInputElement).checked
+
+  if (show_effective_alphabet) {
     ranges_group.push([
       [
         -1,
         input_str.length - 1,
         ['eStr', ...replaceEffectiveAlphabet(input_str)],
       ],
+    ] as RangeSimple[])
+  }
+  if (show_rank_array) {
+    ranges_group.push([
+      [-1, input_str.length - 1, ['rank', ...rankArray(input_str)]],
     ] as RangeSimple[])
   }
 
@@ -450,7 +473,8 @@ const main = () => {
   selectorAddEvent('[name=line_style]', 'click', draw)
   selectorAddEvent('[name=line_style_right]', 'click', draw)
   selectorAddEvent('[name=visualize]', 'click', draw)
-  selectorAddEvent('#effective_alphabet', 'click', draw)
+  // selectorAddEvent('#effective_alphabet', 'click', draw)
+  selectorAddEvent('[type=checkbox]', 'click', draw)
 
   // draw initially.
   input_str.dispatchEvent(
