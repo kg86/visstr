@@ -429,6 +429,29 @@ const draw = (e: Event) => {
   let rangesp: RangeSimple[] = []
   let ranges_group: RangeSimple[][] = []
   let ranges: Range[][] = []
+
+  const show_effective_alphabet = (document.getElementById(
+    'effective_alphabet',
+  ) as HTMLInputElement).checked
+  const show_rank_array = (document.getElementById(
+    'rank_array',
+  ) as HTMLInputElement).checked
+
+  if (show_effective_alphabet) {
+    ranges_group.push([
+      [
+        -1,
+        input_str.length - 1,
+        ['eStr', ...replaceEffectiveAlphabet(input_str)],
+      ],
+    ] as RangeSimple[])
+  }
+  if (show_rank_array) {
+    ranges_group.push([
+      [-1, input_str.length - 1, ['rank', ...rankArray(input_str)]],
+    ] as RangeSimple[])
+  }
+
   if (visualize === 'runs'
       || visualize === 'palindromes'
       || visualize === 'squares'
@@ -463,6 +486,12 @@ const draw = (e: Event) => {
       ranges_group = ranges_group.concat(lz77(input_str))
     else if (visualize === 'lz78')
       ranges_group = ranges_group.concat(lz78(input_str))
+    else if (visualize === 'lyndon_factorization')
+      ranges_group = ranges_group.concat(lyndonFactorization(input_str))
+    else if (visualize === 'lyndon_array')
+      ranges_group = ranges_group.concat(lyndonArray(input_str))
+    else if (visualize === 'enum_lyndon')
+      ranges_group = ranges_group.concat(enumLyndon(input_str))
     ranges = visStr.makeGroupRangesAutoColor(ranges_group, range_style)
     ranges = flat(ranges.map(x => visStr.nonOverlapRanges(x)))
   }
