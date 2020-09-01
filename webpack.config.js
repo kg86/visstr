@@ -9,7 +9,6 @@ const configDemo = {
   devtool: 'inline-source-map',
   entry: {
     vis_str_demo: './src/vis_str_demo.ts',
-    vis_str_demo_dev: './src/vis_str_demo_dev.ts',
   },
   output: {
     filename: '[name].js',
