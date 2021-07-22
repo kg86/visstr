@@ -15,6 +15,7 @@ jobs:
         npm install
         npm run build --if-present
         webpack
+        npx typedoc src/vis_str.ts
 
     - name: move files
       run: |

@@ -1,5 +1,4 @@
 const path = require('path')
-const TypedocWebpackPlugin = require('typedoc-webpack-plugin')
 
 const configDemo = {
   mode: 'development',
@@ -55,20 +54,6 @@ const configLibrary = {
       },
     ],
   },
-  plugins: [
-    new TypedocWebpackPlugin(
-      {
-        out: '../docs',
-        name: 'VisStr API',
-        mode: 'file',
-        target: 'es6',
-        includeDeclarations: false,
-        ignoreCompilerErrors: true,
-        excludePrivate: true,
-      },
-      ['./src/vis_str.ts'],
-    ),
-  ],
 }
 
 module.exports = [configDemo, configLibrary]
