@@ -20,6 +20,6 @@
     "prepublishOnly": "npm run build",
     "test": "echo \"No test specified\""
   },
-  "author": "GOTO Keisuke",
+  "author": "kg86",
   "license": "MIT"
 }
