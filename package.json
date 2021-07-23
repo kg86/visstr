@@ -2,7 +2,21 @@
   "name": "visstr",
   "version": "0.0.3",
   "description": "String Visualizer",
-  "main": "webpack.config.js",
+  "repository": "github:kg86/visstr",
+  "homepage": "https://github.com/kg86/visstr",
+  "license": "MIT",
+  "author": "kg86",
+  "main": "lib/vis_str.js",
+  "keywords": [
+    "visualization",
+    "string",
+    "stringology"
+  ],
+  "files": [
+    "LICENSE",
+    "dist",
+    "lib"
+  ],
   "dependencies": {
     "webpack": "^5.45.1",
     "webpack-cli": "^4.7.2"
@@ -16,10 +30,8 @@
     "typescript": "^4.3.5"
   },
   "scripts": {
-    "build": "tsc",
-    "prepublishOnly": "npm run build",
+    "build": "tsc && webpack",
+    "prepublishOnly": "npm run build && webpack",
     "test": "echo \"No test specified\""
-  },
-  "author": "kg86",
-  "license": "MIT"
+  }
 }

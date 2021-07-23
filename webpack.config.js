@@ -36,8 +36,8 @@ const configLibrary = {
     vis_str: './src/vis_str.ts',
   },
   output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'bundles'),
+    filename: '[name].umd.js',
+    path: path.resolve(__dirname, 'lib'),
     library: 'visstr',
     libraryTarget: 'umd',
     umdNamedDefine: true,
