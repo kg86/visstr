@@ -1,6 +1,6 @@
 {
   "name": "visstr",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "String Visualizer",
   "main": "webpack.config.js",
   "dependencies": {
