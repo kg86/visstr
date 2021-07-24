@@ -1,3 +1,6 @@
+[![npm version](https://img.shields.io/npm/v/visstr.svg?sanitize=true)](https://www.npmjs.com/package/visstr)
+
+
 # VisStr
 
 VisStr is a library to visualize a string and its properties such as repetitions, occurrences, and redundancies.
@@ -58,6 +61,7 @@ Run the following commands.
 $ git clone https://github.com/kg86/visstr.git
 $ cd visstr
 $ npm install
-$ node_modules/.bin/webpack
+$ npm run build
 ```
-Libraries are output in `./bundles` (UMD) and `./lib` (ES6 + source + .d.ts).
+
+Libraries are output in `./lib`.
