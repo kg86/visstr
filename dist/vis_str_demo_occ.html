@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-  <body style="text-align: center; font-size:18px">
+  <body style="text-align: center; font-size: 18px">
     <h2>Occurrences of "aba".</h2>
 
-    <canvas id="canvas" style="border:1px solid #000000;"> </canvas>
-    <script type="text/javascript" src="../bundles/vis_str.js"></script>
+    <canvas id="canvas" style="border: 1px solid #000000"></canvas>
+    <script type="text/javascript" src="../lib/vis_str.umd.js"></script>
     <script type="text/javascript">
       const visstr = window.visstr
 
@@ -14,7 +14,12 @@
       // create visstr object.
       const vstr = new visstr.VisStr(canvas)
       // create occurrences of aba.
-      const occ_aba = [[0, 2], [3, 5], [5, 7], [8, 10]]
+      const occ_aba = [
+        [0, 2],
+        [3, 5],
+        [5, 7],
+        [8, 10],
+      ]
       // add line style and color.
       const ranges = vstr.makeRanges(occ_aba, 'arrow', '#ff0000')
       // make group so that they are not overlap with each others.

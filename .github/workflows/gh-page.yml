@@ -23,7 +23,6 @@ jobs:
         mv dist public/
         mv docs public/
         mv others public/
-        mv bundles public/
         mv _config.yml public/
         mv README.md public/
 
