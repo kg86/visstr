@@ -18,12 +18,12 @@
     "lib"
   ],
   "dependencies": {
+    "color-convert": "^2.0.1",
     "webpack": "^5.45.1",
     "webpack-cli": "^4.7.2"
   },
   "devDependencies": {
     "@types/color-convert": "^2.0.0",
-    "color-convert": "^2.0.1",
     "prettier": "2.3.2",
     "ts-loader": "^9.2.3",
     "typedoc": "^0.21.4",
