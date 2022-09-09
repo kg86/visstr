@@ -1,4 +1,4 @@
-import { VisStr, RangeSimple, Range } from './vis_str'
+import { Range, RangeSimple, VisStr } from './vis_str'
 
 const substrings = (str: string): string[] => {
   const n = str.length
@@ -73,12 +73,15 @@ const enumPrevOccLPF = (str: string): RangeSimple[][] => {
   const n = str.length
   const [prevOcc, lpf] = prevOccLPF(str)
   let res: RangeSimple[][] = [
-    [[-1, n - 1, ['occ'].concat(prevOcc.map(x => x.toString()))]],
-    [[-1, n - 1, ['len'].concat(lpf.map(x => x.toString()))]],
+    [[-1, n - 1, ['occ'].concat(prevOcc.map((x) => x.toString()))]],
+    [[-1, n - 1, ['len'].concat(lpf.map((x) => x.toString()))]],
   ]
   for (let i = 0; i < prevOcc.length; i++) {
     if (lpf[i] > 0) {
-      res.push([[i, i + lpf[i] - 1], [prevOcc[i], prevOcc[i] + lpf[i] - 1]])
+      res.push([
+        [i, i + lpf[i] - 1],
+        [prevOcc[i], prevOcc[i] + lpf[i] - 1],
+      ])
     }
   }
   return res
@@ -106,44 +109,44 @@ const enumSquares = (s: string): RangeSimple[] => {
   return res
 }
 
-const isRightmostSquare = (s: string, beg: number, p: number) : boolean => {
-  if(!isSquare(s, beg, p)) return false;
-  return (!s.includes(s.substr(beg,2*p), beg+1));
+const isRightmostSquare = (s: string, beg: number, p: number): boolean => {
+  if (!isSquare(s, beg, p)) return false
+  return !s.includes(s.substr(beg, 2 * p), beg + 1)
 }
 
-const isLeftmostSquare = (s: string, beg: number, p: number) : boolean => {
-  if(!isSquare(s, beg, p)) return false;
-  return (!s.substr(0,beg+2*p-1).includes(s.substr(beg,2*p)));
+const isLeftmostSquare = (s: string, beg: number, p: number): boolean => {
+  if (!isSquare(s, beg, p)) return false
+  return !s.substr(0, beg + 2 * p - 1).includes(s.substr(beg, 2 * p))
 }
 
 const enumRightmostSquares = (s: string): RangeSimple[] => {
   const n = s.length
   let res: RangeSimple[] = []
-  for(let p = 1; p < n; p++){
-    for(let offset = 0; offset < 2*p; offset++){
-      for(let beg = offset; beg < n - 2*p+1; beg += 2*p){
-        if(isRightmostSquare(s,beg,p)){
-          res.push([beg, beg+2*p-1, p])
+  for (let p = 1; p < n; p++) {
+    for (let offset = 0; offset < 2 * p; offset++) {
+      for (let beg = offset; beg < n - 2 * p + 1; beg += 2 * p) {
+        if (isRightmostSquare(s, beg, p)) {
+          res.push([beg, beg + 2 * p - 1, p])
         }
       }
     }
   }
-  return res;
+  return res
 }
 
 const enumLeftmostSquares = (s: string): RangeSimple[] => {
   const n = s.length
   let res: RangeSimple[] = []
-  for(let p = 1; p < n; p++){
-    for(let offset = 0; offset < 2*p; offset++){
-      for(let beg = offset; beg < n - 2*p+1; beg += 2*p){
-        if(isLeftmostSquare(s,beg,p)){
-          res.push([beg, beg+2*p-1, p])
+  for (let p = 1; p < n; p++) {
+    for (let offset = 0; offset < 2 * p; offset++) {
+      for (let beg = offset; beg < n - 2 * p + 1; beg += 2 * p) {
+        if (isLeftmostSquare(s, beg, p)) {
+          res.push([beg, beg + 2 * p - 1, p])
         }
       }
     }
   }
-  return res;
+  return res
 }
 
 const isRun = (s: string, beg: number, p: number): boolean => {
@@ -188,10 +191,7 @@ const leftExtensions = (str: string, pat: string): string[] => {
 }
 
 const reverse = (str: string): string => {
-  return str
-    .split('')
-    .reverse()
-    .join('')
+  return str.split('').reverse().join('')
 }
 
 const rightExtensions = (str: string, pat: string): string[] => {
@@ -223,7 +223,10 @@ const lz77 = (str: string, show_factorid: number = 1): RangeSimple[][] => {
       ranges = [[i, i, [str[i]]]]
       i += 1
     } else {
-      ranges = [[occs[i], occs[i] + lens[i] - 1], [i, i + lens[i] - 1]]
+      ranges = [
+        [occs[i], occs[i] + lens[i] - 1],
+        [i, i + lens[i] - 1],
+      ]
       i += lens[i]
     }
     if (show_factorid >= 0) {
@@ -363,15 +366,72 @@ const replaceEffectiveAlphabet = (str: string): string[] => {
 }
 
 const suffixArray = (str: string): number[] => {
-  const suffixes = [...Array(str.length).keys()].map(i => str.substr(i))
+  const suffixes = [...Array(str.length).keys()].map((i) => str.substr(i))
   suffixes.sort()
-  return suffixes.map(s => str.length - s.length)
+  return suffixes.map((s) => str.length - s.length)
 }
+
 const rankArray = (str: string, sa?: number[]) => {
   if (sa === undefined) sa = suffixArray(str)
   const rank = Array(str.length)
   sa.forEach((pos, r) => (rank[pos] = r))
   return rank
+}
+
+// next smaller suffixes
+const nssArray = (str: string, rank?: number[]) => {
+  if (rank === undefined) rank = rankArray(str)
+  const n = rank.length
+  const nssa = new Array(n)
+  for (let i = 0; i < n; i++) {
+    let nss = n
+    for (let j = i + 1; j < n; j++) {
+      if (rank[i] > rank[j]) {
+        nss = j
+        break
+      }
+    }
+    nssa[i] = nss
+  }
+  return nssa
+}
+
+// next smaller suffixes
+const prevArray = (str: string, rank?: number[]) => {
+  if (rank === undefined) rank = rankArray(str)
+  const n = rank.length
+  const pssa = new Array(n)
+  for (let i = 0; i < n; i++) {
+    let pss = -1
+    for (let j = i-1; j >=0; j--) {
+      if (rank[i] > rank[j]) {
+        pss = j
+        break
+      }
+    }
+    pssa[i] = pss
+  }
+  return pssa
+}
+
+const nextSmallerSuffixes = (str: string): RangeSimple[][] => {
+  const nssa = nssArray(str)
+  const res: RangeSimple[][] = []
+    for (let i = 0; i < str.length; i++) {
+    const group: RangeSimple[] = [[i, nssa[i]]]
+    if (group.length > 0) res.push(group)
+  }
+  return res
+}
+
+const prevSmallerSuffixes = (str: string): RangeSimple[][] => {
+  const pssa = prevArray(str)
+  const res: RangeSimple[][] = []
+    for (let i = 0; i < str.length; i++) {
+    const group: RangeSimple[] = [[pssa[i], i]]
+    if (group.length > 0) res.push(group)
+  }
+  return res
 }
 
 const enumIf = (
@@ -386,8 +446,8 @@ const enumIfGroup = (
   check: (s: string, p: string) => boolean,
 ): RangeSimple[][] => {
   return substrings(str)
-    .filter(p => check(str, p))
-    .map(p => findAll(str, p))
+    .filter((p) => check(str, p))
+    .map((p) => findAll(str, p))
 }
 
 const radioValue = (selector: string): string => {
@@ -430,12 +490,12 @@ const draw = (e: Event) => {
   let ranges_group: RangeSimple[][] = []
   let ranges: Range[][] = []
 
-  const show_effective_alphabet = (document.getElementById(
-    'effective_alphabet',
-  ) as HTMLInputElement).checked
-  const show_rank_array = (document.getElementById(
-    'rank_array',
-  ) as HTMLInputElement).checked
+  const show_effective_alphabet = (
+    document.getElementById('effective_alphabet') as HTMLInputElement
+  ).checked
+  const show_rank_array = (
+    document.getElementById('rank_array') as HTMLInputElement
+  ).checked
 
   if (show_effective_alphabet) {
     ranges_group.push([
@@ -452,20 +512,22 @@ const draw = (e: Event) => {
     ] as RangeSimple[])
   }
 
-  if (visualize === 'runs'
-      || visualize === 'palindromes'
-      || visualize === 'squares'
-      || visualize === 'rmostsquares'
-      || visualize === 'lmostsquares') {
+  if (
+    visualize === 'runs' ||
+    visualize === 'palindromes' ||
+    visualize === 'squares' ||
+    visualize === 'rmostsquares' ||
+    visualize === 'lmostsquares'
+  ) {
     if (visualize === 'runs') {
       rangesp = enumRuns(input_str) as RangeSimple[]
     } else if (visualize === 'palindromes') {
       rangesp = enumPalindromes(input_str) as RangeSimple[]
     } else if (visualize === 'squares') {
       rangesp = enumSquares(input_str) as RangeSimple[]
-    } else if(visualize === 'rmostsquares'){
+    } else if (visualize === 'rmostsquares') {
       rangesp = enumRightmostSquares(input_str) as RangeSimple[]
-    }else if(visualize === 'lmostsquares'){
+    } else if (visualize === 'lmostsquares') {
       rangesp = enumLeftmostSquares(input_str) as RangeSimple[]
     }
     console.log('rangesp', rangesp)
@@ -492,8 +554,12 @@ const draw = (e: Event) => {
       ranges_group = ranges_group.concat(lyndonArray(input_str))
     else if (visualize === 'enum_lyndon')
       ranges_group = ranges_group.concat(enumLyndon(input_str))
+    else if (visualize === 'prev_smaller_suffix')
+      ranges_group = ranges_group.concat(prevSmallerSuffixes(input_str))
+    else if (visualize === 'next_smaller_suffix')
+      ranges_group = ranges_group.concat(nextSmallerSuffixes(input_str))
     ranges = visStr.makeGroupRangesAutoColor(ranges_group, range_style)
-    ranges = flat(ranges.map(x => visStr.nonOverlapRanges(x)))
+    ranges = flat(ranges.map((x) => visStr.nonOverlapRanges(x)))
   }
 
   visStr.draw(input_str, ranges)
