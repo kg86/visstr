@@ -1,28 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1745272-7"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-1745272-7');
-    </script>
+    <meta charset="UTF-8" />
+    <title>Occurrences of "aba"</title>
   </head>
-  <body style="text-align: center; font-size: 18px">
+  <body>
     <h2>Occurrences of "aba".</h2>
-
-    <canvas id="canvas" style="border: 1px solid #000000"></canvas>
+    <canvas
+      id="canvas"
+      width="1000"
+      height="240"
+      style="border:1px solid #000000;"
+    >
+    </canvas>
     <script type="text/javascript" src="../lib/vis_str.umd.js"></script>
-    <script type="text/javascript">
-      const visstr = window.visstr
-
+    <script>
+      const { VisStr } = window.visstr
       const canvas = document.querySelector('#canvas')
+      // create visstr object.
+      const vstr = new VisStr(canvas)
       // input string
       const s = 'abaababaabaab'
-      // create visstr object.
-      const vstr = new visstr.VisStr(canvas)
+
       // create occurrences of aba.
       const occ_aba = [
         [0, 2],
@@ -33,34 +32,8 @@
       // add line style and color.
       const ranges = vstr.makeRanges(occ_aba, 'arrow', '#ff0000')
       // make group so that they are not overlap with each others.
-      const range_groups = vstr.nonOverlapRanges(ranges)
-      // draw the occurrences.
-      vstr.draw(s, range_groups)
+      const grouped = vstr.nonOverlapRanges(ranges)
+      vstr.draw(s, grouped)
     </script>
-    <br />
-
-    The figure of the above is drawn by the following source code.<br />
-    The original code is
-    <a href="https://github.com/kg86/visstr/dist/vis_str_demo_occ.html">here</a
-    >.<br />
-    See also
-    <a href="https://github.com/kg86/visstr">the visstr repository</a>.
-    <pre style="width: 500px; text-align: left; margin: auto">
-const visstr = window.visstr
-
-const canvas = document.querySelector('#canvas')
-// input string
-const s = 'abaababaabaab'
-// create visstr object.
-const vstr = new visstr.VisStr(canvas)
-// create occurrences of aba.
-const occ_aba = [[0, 2], [3, 5], [5, 7], [8, 10]]
-// add line style and color.
-const ranges = vstr.makeRanges(occ_aba, 'arrow', '#ff0000')
-// make group so that they are not overlap with each others.
-const range_groups = vstr.nonOverlapRanges(ranges)
-// draw the occurrences.
-vstr.draw(s, range_groups)
-    </pre>
   </body>
 </html>
