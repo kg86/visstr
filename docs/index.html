@@ -66,38 +66,6 @@
 				<p>The following image visualizes all palindromes that occurs as substrings in &quot;mississippi$&quot;.</p>
 				<p><img src="others/palindromes.png" alt=""></p>
 				<p>See <a href="https://kg86.github.io/visstr/dist/vis_str_demo.html">demos</a> and <a href="https://kg86.github.io/visstr/docs/index.html">API documents</a>.</p>
-				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
-					<h2>Usage</h2>
-				</a>
-				<p>Put a canvas in your html, and then import <code>vis_str.js</code> like the following.
-				(<code>vis_str.js</code> is output to <code>./bundles</code> by compile.)</p>
-				<pre><code class="language-html"><span style="color: #800000">&lt;canvas</span><span style="color: #000000"> </span><span style="color: #FF0000">id</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;canvas&quot;</span><span style="color: #000000"> </span><span style="color: #FF0000">style</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;border:1px solid #000000;&quot;</span><span style="color: #800000">&gt;</span><span style="color: #000000"> </span><span style="color: #800000">&lt;/canvas&gt;</span>
-<span style="color: #800000">&lt;script</span><span style="color: #000000FF"> </span><span style="color: #FF0000">type</span><span style="color: #000000FF">=</span><span style="color: #0000FF">&quot;text/javascript&quot;</span><span style="color: #000000FF"> </span><span style="color: #FF0000">src</span><span style="color: #000000FF">=</span><span style="color: #0000FF">&quot;./vis_str.js&quot;</span><span style="color: #800000">&gt;&lt;/script&gt;</span>
-</code></pre>
-				<p>Create an visstr object in your js.</p>
-				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">visstr</span><span style="color: #000000"> = </span><span style="color: #001080">window</span><span style="color: #000000">.</span><span style="color: #001080">visstr</span>
-
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">canvas</span><span style="color: #000000"> = </span><span style="color: #001080">document</span><span style="color: #000000">.</span><span style="color: #795E26">querySelector</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;#canvas&#039;</span><span style="color: #000000">)</span>
-<span style="color: #008000">// input string</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">s</span><span style="color: #000000"> = </span><span style="color: #A31515">&#039;abaababaabaab&#039;</span>
-<span style="color: #008000">// create visstr object.</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">vstr</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">visstr</span><span style="color: #000000">.</span><span style="color: #795E26">VisStr</span><span style="color: #000000">(</span><span style="color: #001080">canvas</span><span style="color: #000000">)</span>
-</code></pre>
-				<p>Create a range list you want to draw, and add line style and color, and then group them so that they do not overlap with each other.</p>
-				<pre><code class="language-js"><span style="color: #008000">// create occurrences of aba.</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">occ_aba</span><span style="color: #000000"> = [[</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #098658">2</span><span style="color: #000000">], [</span><span style="color: #098658">3</span><span style="color: #000000">, </span><span style="color: #098658">5</span><span style="color: #000000">], [</span><span style="color: #098658">5</span><span style="color: #000000">, </span><span style="color: #098658">7</span><span style="color: #000000">], [</span><span style="color: #098658">8</span><span style="color: #000000">, </span><span style="color: #098658">10</span><span style="color: #000000">]]</span>
-<span style="color: #008000">// add line style and color.</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">ranges</span><span style="color: #000000"> = </span><span style="color: #001080">vstr</span><span style="color: #000000">.</span><span style="color: #795E26">makeRanges</span><span style="color: #000000">(</span><span style="color: #001080">occ_aba</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;arrow&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;#ff0000&#039;</span><span style="color: #000000">)</span>
-<span style="color: #008000">// make group so that they are not overlap with each others.</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">range_groups</span><span style="color: #000000"> = </span><span style="color: #001080">vstr</span><span style="color: #000000">.</span><span style="color: #795E26">nonOverlapRanges</span><span style="color: #000000">(</span><span style="color: #001080">ranges</span><span style="color: #000000">)</span>
-</code></pre>
-				<p>Draw the range list by <code>vstr.draw</code>.</p>
-				<pre><code class="language-js"><span style="color: #008000">// draw the occurrences.</span>
-<span style="color: #001080">vstr</span><span style="color: #000000">.</span><span style="color: #795E26">draw</span><span style="color: #000000">(</span><span style="color: #001080">s</span><span style="color: #000000">, </span><span style="color: #001080">range_groups</span><span style="color: #000000">)</span>
-</code></pre>
-				<p>The canvas draws the range list as following.</p>
-				<p><img src="others/occ_aba.png" alt=""></p>
-				<p>See <a href="https://kg86.github.io/visstr/dist/vis_str_demo_occ.html">the demo</a>.</p>
 				<a href="#compile" id="compile" style="color: inherit; text-decoration: none;">
 					<h2>Compile</h2>
 				</a>
@@ -107,7 +75,49 @@
 <span style="color: #000000">$ npm install</span>
 <span style="color: #000000">$ npm run build</span>
 </code></pre>
-				<p>Libraries are output in <code>./lib</code>.</p>
+				<p>Libraries are output in <code>./lib</code> (UMD/CommonJS) and demo assets in <code>./dist</code>.</p>
+				<a href="#examples-visualizing-the-substring-occurrences" id="examples-visualizing-the-substring-occurrences" style="color: inherit; text-decoration: none;">
+					<h2>Examples: Visualizing the substring occurrences</h2>
+				</a>
+				<p>This is an example to visualize all the occurrences of <code>aba</code> in <code>abaababaabaab</code> using VisStr.</p>
+				<ol>
+					<li>Add <code>&lt;canvas&gt;</code> element to the HTML which is a core of the visualizer.</li>
+				</ol>
+				<pre><code class="language-html"><span style="color: #800000">&lt;canvas</span><span style="color: #000000"> </span><span style="color: #FF0000">id</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;canvas&quot;</span><span style="color: #000000"> </span><span style="color: #FF0000">width</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;1000&quot;</span><span style="color: #000000"> </span><span style="color: #FF0000">height</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;240&quot;</span><span style="color: #000000"> </span><span style="color: #FF0000">style</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;border:1px solid #000000;&quot;</span><span style="color: #800000">&gt;</span>
+<span style="color: #800000">&lt;/canvas&gt;</span>
+</code></pre>
+				<ol start="2">
+					<li>Load the VisStr library <code>../lib/vis_str.umd.js</code>.
+					Note that we have to use umd version for browser.</li>
+				</ol>
+				<pre><code class="language-html"><span style="color: #800000">&lt;script</span><span style="color: #000000FF"> </span><span style="color: #FF0000">type</span><span style="color: #000000FF">=</span><span style="color: #0000FF">&quot;text/javascript&quot;</span><span style="color: #000000FF"> </span><span style="color: #FF0000">src</span><span style="color: #000000FF">=</span><span style="color: #0000FF">&quot;../lib/vis_str.umd.js&quot;</span><span style="color: #800000">&gt;&lt;/script&gt;</span>
+</code></pre>
+				<ol start="3">
+					<li>Create a string and a range list representing the occurrences of <code>aba</code>, and specify the style of the range list (e.g., arrow, line, curve) and the color.</li>
+				</ol>
+				<pre><code class="language-javascript"><span style="color: #0000FF">const</span><span style="color: #000000"> { </span><span style="color: #0070C1">VisStr</span><span style="color: #000000"> } = </span><span style="color: #001080">window</span><span style="color: #000000">.</span><span style="color: #001080">visstr</span><span style="color: #000000">;</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">canvas</span><span style="color: #000000"> = </span><span style="color: #001080">document</span><span style="color: #000000">.</span><span style="color: #795E26">querySelector</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;#canvas&quot;</span><span style="color: #000000">);</span>
+<span style="color: #008000">// create visstr object.</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">vstr</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">VisStr</span><span style="color: #000000">(</span><span style="color: #001080">canvas</span><span style="color: #000000">);</span>
+<span style="color: #008000">// input string</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">s</span><span style="color: #000000"> = </span><span style="color: #A31515">&quot;abaababaabaab&quot;</span><span style="color: #000000">;</span>
+
+<span style="color: #008000">// create occurrences of aba.</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">occAba</span><span style="color: #000000"> = [</span>
+<span style="color: #000000">  [</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #098658">2</span><span style="color: #000000">],</span>
+<span style="color: #000000">  [</span><span style="color: #098658">3</span><span style="color: #000000">, </span><span style="color: #098658">5</span><span style="color: #000000">],</span>
+<span style="color: #000000">  [</span><span style="color: #098658">5</span><span style="color: #000000">, </span><span style="color: #098658">7</span><span style="color: #000000">],</span>
+<span style="color: #000000">  [</span><span style="color: #098658">8</span><span style="color: #000000">, </span><span style="color: #098658">10</span><span style="color: #000000">],</span>
+<span style="color: #000000">];</span>
+<span style="color: #008000">// add line style and color.</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">ranges</span><span style="color: #000000"> = </span><span style="color: #001080">vstr</span><span style="color: #000000">.</span><span style="color: #795E26">makeRanges</span><span style="color: #000000">(</span><span style="color: #001080">occAba</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;arrow&quot;</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;#ff0000&quot;</span><span style="color: #000000">);</span>
+<span style="color: #008000">// make group so that they are not overlap with each others.</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">grouped</span><span style="color: #000000"> = </span><span style="color: #001080">vstr</span><span style="color: #000000">.</span><span style="color: #795E26">nonOverlapRanges</span><span style="color: #000000">(</span><span style="color: #001080">ranges</span><span style="color: #000000">);</span>
+<span style="color: #001080">vstr</span><span style="color: #000000">.</span><span style="color: #795E26">draw</span><span style="color: #000000">(</span><span style="color: #001080">s</span><span style="color: #000000">, </span><span style="color: #001080">grouped</span><span style="color: #000000">);</span>
+</code></pre>
+				<p>The result is visualized as follows:</p>
+				<p><img src="others/occ_aba.png" alt=""></p>
+				<p>You can find the <a href="dist/vis_str_demo_occ.html">source code</a>, and the <a href="https://kg86.github.io/visstr/dist/vis_str_demo_occ.html">demo page</a>.</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
