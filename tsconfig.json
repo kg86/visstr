@@ -2,12 +2,15 @@
   "compilerOptions": {
     "sourceMap": true,
     "strict": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
     "declaration": true,
     "target": "es6",
     "module": "CommonJS",
     "lib": ["es6", "dom"],
-    "outDir": "lib"
+    "rootDir": "src",
+    "outDir": "lib",
+    "types": ["jest"]
   },
   "files": ["src/vis_str.ts", "src/vis_str_demo.ts"]
 }
