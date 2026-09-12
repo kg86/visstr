@@ -1,6 +1,6 @@
-/** The simple range representation for strings */
+/** The simple range representation for strings. The second element (end) is exclusive. */
 export type RangeStr = [number, number, string[]];
-/** The simple range representation for line */
+/** The simple range representation for line. The second element (end) is exclusive. */
 export type RangeLine = [number, number, number?];
 /** The simple range representation */
 export type RangeSimple = RangeStr | RangeLine;
@@ -11,11 +11,11 @@ export interface Range {
     color: string;
     /** The beginning index of the range. */
     beg: number;
-    /** The ending index of the range. Note that indexes are inclusive. */
+    /** The ending index of the range. Note that `end` is exclusive: the range is [`beg`, `end`). */
     end: number;
-    /** The step of the range [`beg`, `end`]. For example, a range [`beg`, `end`, `step`] = [1, 8, 3] represents continuous ranges [[`beg`, `end`]]=[[1, 3], [4, 6], [7, 8]] */
+    /** The step of the range [`beg`, `end`]. For example, a range [`beg`, `end`, `step`] = [1, 9, 3] represents continuous ranges [[`beg`, `end`]]=[[1, 4], [4, 7], [7, 9]] */
     step?: number;
-    /** The strings of the range. Its length must be equal to the length of the range `end` - `beg` + 1 */
+    /** The strings of the range. Its length must be equal to the length of the range `end` - `beg` */
     str?: string[];
 }
 export interface RangePx {
@@ -29,7 +29,7 @@ export interface RangePx {
     x_end: number;
     /** The y-coordinate of the range. */
     y: number;
-    /** The strings of the range. Its length must be equal to the length of the range `end` - `beg` + 1 */
+    /** The strings of the range. Its length must be equal to the length of the range `end` - `beg` */
     str?: string[];
 }
 export declare class VisStr {
