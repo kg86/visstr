@@ -9,6 +9,13 @@ on:
   # dispatches this workflow against the new tag instead of relying on the
   # `push` trigger above.
   workflow_dispatch:
+    inputs:
+      tag:
+        description: >
+          Tag to release, e.g. v0.1.0. Only needed when dispatching against a
+          ref whose own workflow file predates this input (so it can't be
+          targeted directly) - otherwise leave empty to use the current ref.
+        required: false
 
 permissions:
   contents: write
@@ -20,6 +27,8 @@ jobs:
     steps:
 
     - uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.tag || github.ref_name }}
 
     - uses: actions/setup-node@v5
       with:
@@ -41,4 +50,4 @@ jobs:
     - name: Create GitHub Release
       env:
         GH_TOKEN: ${{ github.token }}
-      run: gh release create "${{ github.ref_name }}" --generate-notes
+      run: gh release create "${{ inputs.tag || github.ref_name }}" --generate-notes
