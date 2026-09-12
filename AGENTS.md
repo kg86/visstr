@@ -49,10 +49,23 @@ Release steps:
 
    Only after this step is the new version publicly available on npm.
 
-4. Versioning follows [Semantic Versioning](https://semver.org/):
+4. After pushing the tag, record what changed since the previous version as
+   a GitHub Release note (this repo has no `CHANGELOG.md`):
+
+   ```sh
+   gh release create vX.Y.Z --generate-notes
+   ```
+
+   `--generate-notes` builds the note from the merged PR titles since the
+   last release.
+
+5. Versioning follows [Semantic Versioning](https://semver.org/), with the
+   pre-1.0 convention that breaking changes bump `minor` instead of `major`
+   while the major version is still `0`:
    - `patch`: bug fixes only
-   - `minor`: backwards-compatible feature additions
-   - `major`: breaking changes
+   - `minor`: backwards-compatible feature additions, or (while `major` is
+     `0`) breaking changes
+   - `major`: breaking changes, once the project reaches `1.0.0`
 
 ## Other
 
