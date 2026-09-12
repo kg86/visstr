@@ -27,7 +27,7 @@ jobs:
         npm run build --if-present
         npm run test
 
-    - name: Publish to npm
+    - name: Stage npm publish
       run: |
         npm --version
-        npm publish
+        npm stage publish
