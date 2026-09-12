@@ -35,21 +35,21 @@ export interface RangePx {
 export declare class VisStr {
     private canvas;
     private ctx;
-    private str_x;
-    private str_y;
-    private font_size;
-    private font_size_half;
-    private font_type;
+    private strX;
+    private strY;
+    private fontSize;
+    private fontSizeHalf;
+    private fontType;
     /** The offset to start drawing a range from a center position of an index. */
-    private range_beg_offset;
-    private range_end_offset;
+    private rangeBegOffset;
+    private rangeEndOffset;
     /**
      *
      * @param canvas HTMLCanvasElement
-     * @param font_size font size
-     * @param font_type font name
+     * @param fontSize font size
+     * @param fontType font name
      */
-    constructor(canvas: HTMLCanvasElement, font_size?: number, font_type?: string);
+    constructor(canvas: HTMLCanvasElement, fontSize?: number, fontType?: string);
     /** Clear the canvas. */
     clear(): void;
     /**
@@ -119,19 +119,19 @@ export declare class VisStr {
     drawRange(r: Range, y: number): void;
     /**
      * Draw ranges.
-     * @param range_rows Ranges to draw.
+     * @param rangeRows Ranges to draw.
      */
-    drawRanges(range_rows: Range[][]): void;
+    drawRanges(rangeRows: Range[][]): void;
     /**
      * Draw an input string.
      */
-    drawInputStr(input_str: string): void;
+    drawInputStr(inputStr: string): void;
     /**
      * Draw a given string and ranges.
-     * @param input_str Input string to draw.
-     * @param rss The ranges to draw which are related to a given string `input_str`
+     * @param inputStr Input string to draw.
+     * @param rss The ranges to draw which are related to a given string `inputStr`
      */
-    draw(input_str: string, rss: Range[][]): void;
+    draw(inputStr: string, rss: Range[][]): void;
     /**
      * Make group that each contains a single range.
      * @param ranges The range list.
