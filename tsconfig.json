@@ -7,7 +7,8 @@
     "target": "es6",
     "module": "CommonJS",
     "lib": ["es6", "dom"],
-    "outDir": "lib"
+    "outDir": "lib",
+    "types": ["jest"]
   },
   "files": ["src/vis_str.ts", "src/vis_str_demo.ts"]
 }
