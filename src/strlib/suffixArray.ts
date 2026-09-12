@@ -67,7 +67,7 @@ export const nextSmallerSuffixes = (str: string): RangeSimple[][] => {
   const nssa = nssArray(str);
   const res: RangeSimple[][] = [];
   for (let i = 0; i < str.length; i++) {
-    const group: RangeSimple[] = [[i, nssa[i]]];
+    const group: RangeSimple[] = [[i, nssa[i] + 1]];
     if (group.length > 0) res.push(group);
   }
   return res;
@@ -77,7 +77,7 @@ export const prevSmallerSuffixes = (str: string): RangeSimple[][] => {
   const pssa = prevArray(str);
   const res: RangeSimple[][] = [];
   for (let i = 0; i < str.length; i++) {
-    const group: RangeSimple[] = [[pssa[i], i]];
+    const group: RangeSimple[] = [[pssa[i], i + 1]];
     if (group.length > 0) res.push(group);
   }
   return res;

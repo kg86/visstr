@@ -2,10 +2,10 @@ import * as strlib from "./strlib";
 
 test("enum palindromes", () => {
   expect(strlib.enumPalindromes("aba")).toStrictEqual([
-    [0, 0],
-    [1, 1],
-    [2, 2],
-    [0, 2],
+    [0, 1],
+    [1, 2],
+    [2, 3],
+    [0, 3],
   ]);
 });
 
@@ -22,31 +22,31 @@ test("substrings", () => {
 
 test("findAll", () => {
   expect(strlib.findAll("abcabc", "abc")).toStrictEqual([
-    [0, 2],
-    [3, 5],
+    [0, 3],
+    [3, 6],
   ]);
 });
 
 test("enumSquares", () => {
-  expect(strlib.enumSquares("abab")).toStrictEqual([[0, 3, 2]]);
+  expect(strlib.enumSquares("abab")).toStrictEqual([[0, 4, 2]]);
 });
 
 test("enumRightmostSquares", () => {
   expect(strlib.enumRightmostSquares("ababab")).toStrictEqual([
-    [1, 4, 2],
-    [2, 5, 2],
+    [1, 5, 2],
+    [2, 6, 2],
   ]);
 });
 
 test("enumLeftmostSquares", () => {
   expect(strlib.enumLeftmostSquares("ababab")).toStrictEqual([
-    [0, 3, 2],
-    [1, 4, 2],
+    [0, 4, 2],
+    [1, 5, 2],
   ]);
 });
 
 test("enumRuns", () => {
-  expect(strlib.enumRuns("aa")).toStrictEqual([[0, 1, 1]]);
+  expect(strlib.enumRuns("aa")).toStrictEqual([[0, 2, 1]]);
 });
 
 test("isMaxRepeat", () => {
@@ -59,24 +59,24 @@ test("isMaxRepeat", () => {
 test("lz77", () => {
   expect(strlib.lz77("aa")).toStrictEqual([
     [
-      [0, 0, ["a"]],
-      [1, 1, ["f1"]],
+      [0, 1, ["a"]],
+      [1, 2, ["f1"]],
     ],
     [
-      [0, 0],
-      [1, 1],
-      [2, 2, ["f2"]],
+      [0, 1],
+      [1, 2],
+      [2, 3, ["f2"]],
     ],
   ]);
 });
 
 test("lz78", () => {
   expect(strlib.lz78("aa")).toStrictEqual([
-    [[0, 1, ["a", "f1"]]],
+    [[0, 2, ["a", "f1"]]],
     [
-      [0, 0],
-      [1, 1],
-      [2, 2, ["f2"]],
+      [0, 1],
+      [1, 2],
+      [2, 3, ["f2"]],
     ],
   ]);
 });
@@ -87,7 +87,7 @@ test("isLyndon", () => {
 });
 
 test("lyndonFactorization", () => {
-  expect(strlib.lyndonFactorization("aab")).toStrictEqual([[[0, 2, 3]]]);
+  expect(strlib.lyndonFactorization("aab")).toStrictEqual([[[0, 3, 3]]]);
 });
 
 test("suffixArray / rankArray", () => {

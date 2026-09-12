@@ -1,8 +1,8 @@
 import convert from "color-convert";
 
-/** The simple range representation for strings */
+/** The simple range representation for strings. The second element (end) is exclusive. */
 export type RangeStr = [number, number, string[]];
-/** The simple range representation for line */
+/** The simple range representation for line. The second element (end) is exclusive. */
 export type RangeLine = [number, number, number?];
 /** The simple range representation */
 export type RangeSimple = RangeStr | RangeLine;
@@ -14,11 +14,11 @@ export interface Range {
   color: string;
   /** The beginning index of the range. */
   beg: number;
-  /** The ending index of the range. Note that indexes are inclusive. */
+  /** The ending index of the range. Note that `end` is exclusive: the range is [`beg`, `end`). */
   end: number;
-  /** The step of the range [`beg`, `end`]. For example, a range [`beg`, `end`, `step`] = [1, 8, 3] represents continuous ranges [[`beg`, `end`]]=[[1, 3], [4, 6], [7, 8]] */
+  /** The step of the range [`beg`, `end`]. For example, a range [`beg`, `end`, `step`] = [1, 9, 3] represents continuous ranges [[`beg`, `end`]]=[[1, 4], [4, 7], [7, 9]] */
   step?: number;
-  /** The strings of the range. Its length must be equal to the length of the range `end` - `beg` + 1 */
+  /** The strings of the range. Its length must be equal to the length of the range `end` - `beg` */
   str?: string[];
 }
 
@@ -33,7 +33,7 @@ export interface RangePx {
   x_end: number;
   /** The y-coordinate of the range. */
   y: number;
-  /** The strings of the range. Its length must be equal to the length of the range `end` - `beg` + 1 */
+  /** The strings of the range. Its length must be equal to the length of the range `end` - `beg` */
   str?: string[];
 }
 
@@ -224,9 +224,12 @@ export class VisStr {
    */
   drawRange(r: Range, y: number) {
     this.ctx.strokeStyle = r.color;
+    // `r.end` is exclusive; recover the inclusive last index for the
+    // pixel/step math below, which mirrors the previous inclusive-end logic.
+    const endIncl = r.end - 1;
     const rpx = {
       x_beg: this.rangeBeg(r.beg),
-      x_end: this.rangeEnd(r.end),
+      x_end: this.rangeEnd(endIncl),
       y: y,
       style: r.style,
       color: r.color,
@@ -237,17 +240,17 @@ export class VisStr {
     } else if (r.step === undefined) {
       this.drawRangePx(rpx);
     } else {
-      for (let cur = r.beg + r.step - 1; cur < r.end; cur += r.step) {
+      for (let cur = r.beg + r.step - 1; cur < endIncl; cur += r.step) {
         rpx.x_end = this.strX + this.fontSize * cur + this.fontSizeHalf;
         this.drawRangePx(rpx);
         rpx.x_beg = rpx.x_end;
       }
-      if ((r.end - r.beg + 1) % r.step === 0) {
-        rpx.x_end = this.rangeEnd(r.end);
+      if ((endIncl - r.beg + 1) % r.step === 0) {
+        rpx.x_end = this.rangeEnd(endIncl);
         this.drawRangePx(rpx);
       } else {
         // There is an uncomplete range.
-        rpx.x_end = this.strX + this.fontSize * r.end + this.fontSizeHalf;
+        rpx.x_end = this.strX + this.fontSize * endIncl + this.fontSizeHalf;
         rpx.style = r.style.split(",")[0] + ",line";
         this.drawRangePx(rpx);
       }
@@ -279,7 +282,7 @@ export class VisStr {
       style: "str",
       color: "#000000",
       beg: -1,
-      end: inputStr.length - 1,
+      end: inputStr.length,
       str: index,
     };
     this.drawRange(r, this.strY - this.fontSize - this.fontSizeHalf);
@@ -296,7 +299,7 @@ export class VisStr {
    * @param rss The ranges to draw which are related to a given string `inputStr`
    */
   draw(inputStr: string, rss: Range[][]) {
-    let rangeBound = [-1, inputStr.length - 1];
+    let rangeBound = [-1, inputStr.length];
     rss.forEach((rs) =>
       rs.forEach(
         (r) =>
@@ -307,7 +310,7 @@ export class VisStr {
       ),
     );
     this.strX = this.fontSize + Math.abs(rangeBound[0]) * this.fontSize;
-    this.canvas.width = (rangeBound[1] - rangeBound[0] + 2) * this.fontSize;
+    this.canvas.width = (rangeBound[1] - rangeBound[0] + 1) * this.fontSize;
     this.canvas.height =
       this.strY +
       this.fontSizeHalf +
@@ -347,7 +350,7 @@ export class VisStr {
   nonOverlapObjs<T>(Ts: T[], rangef: (arg0: T) => number[]): T[][] {
     if (Ts.length <= 0) return [];
     const ends = Ts.map((t) => rangef(t)[1]);
-    const n = Math.max(...ends) + 1;
+    const n = Math.max(...ends);
     const used = new Array<boolean>(n);
     used.fill(false);
     const res = [];
@@ -355,7 +358,7 @@ export class VisStr {
     for (const t of Ts) {
       // check whether or not a range can be inserted to the current row.
       let usedAny = false;
-      for (let i = rangef(t)[0]; i <= rangef(t)[1]; i++) {
+      for (let i = rangef(t)[0]; i < rangef(t)[1]; i++) {
         usedAny = usedAny || used[i];
       }
       if (usedAny) {
@@ -365,7 +368,7 @@ export class VisStr {
       } else {
         rows.push(t);
       }
-      for (let i = rangef(t)[0]; i <= rangef(t)[1]; i++) {
+      for (let i = rangef(t)[0]; i < rangef(t)[1]; i++) {
         used[i] = true;
       }
     }

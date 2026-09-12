@@ -68,7 +68,7 @@ const draw = (_e: Event) => {
     rangesGroup.push([
       [
         -1,
-        inputStr.length - 1,
+        inputStr.length,
         ["eStr", ...strlib.replaceEffectiveAlphabet(inputStr)],
       ],
     ] as RangeSimple[]);

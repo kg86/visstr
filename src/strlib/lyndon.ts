@@ -22,7 +22,7 @@ export const enumLyndon = (str: string): RangeSimple[][] => {
     const group: RangeSimple[] = [];
     for (let i = 0; i + len <= str.length; i++) {
       const sub = str.slice(i, i + len);
-      if (isLyndon(sub)) group.push([i, i + len - 1]);
+      if (isLyndon(sub)) group.push([i, i + len]);
     }
     if (group.length > 0) res.push(group);
   }
@@ -63,7 +63,7 @@ export const lyndonFactorization = (str: string): RangeSimple[][] => {
   while (beg < str.length) {
     const factor = findLongestLyndonFactor(str, beg);
     const lenFactor = factor[0] * factor[1];
-    res.push([[beg, beg + lenFactor - 1, factor[0]]] as RangeSimple[]);
+    res.push([[beg, beg + lenFactor, factor[0]]] as RangeSimple[]);
     beg += lenFactor;
   }
   return res;
@@ -73,7 +73,7 @@ export const lyndonArray = (str: string): RangeSimple[][] => {
   const res: RangeSimple[][] = [];
   for (let i = 0; i < str.length; i++) {
     const factor = findLongestLyndonFactor(str, i);
-    res.push([[i, i + factor[0] - 1]] as RangeSimple[]);
+    res.push([[i, i + factor[0]]] as RangeSimple[]);
   }
   return res;
 };
