@@ -1,9 +1,9 @@
 /** The simple range representation for strings */
-export declare type RangeStr = [number, number, string[]];
+export type RangeStr = [number, number, string[]];
 /** The simple range representation for line */
-export declare type RangeLine = [number, number, number?];
+export type RangeLine = [number, number, number?];
 /** The simple range representation */
-export declare type RangeSimple = RangeStr | RangeLine;
+export type RangeSimple = RangeStr | RangeLine;
 export interface Range {
     /** The style to draw range. It is either of ["line", "curve", "arrow", "str"]. If "str" is chosen, the optinal parameter `str` must be given. For other styles, you can set left style and right style lie "line,arrow". */
     style: string;

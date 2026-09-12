@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Occurrences of "aba"</title>
+  </head>
+  <body>
+    <h2>Occurrences of "aba".</h2>
+    <canvas
+      id="canvas"
+      width="1000"
+      height="240"
+      style="border:1px solid #000000;"
+    >
+    </canvas>
+    <script type="text/javascript" src="../lib/vis_str.umd.js"></script>
+    <script>
+      const { VisStr } = window.visstr
+      const canvas = document.querySelector('#canvas')
+      // create visstr object.
+      const vstr = new VisStr(canvas)
+      // input string
+      const s = 'abaababaabaab'
+
+      // create occurrences of aba.
+      const occ_aba = [
+        [0, 2],
+        [3, 5],
+        [5, 7],
+        [8, 10],
+      ]
+      // add line style and color.
+      const ranges = vstr.makeRanges(occ_aba, 'arrow', '#ff0000')
+      // make group so that they are not overlap with each others.
+      const grouped = vstr.nonOverlapRanges(ranges)
+      vstr.draw(s, grouped)
+    </script>
+  </body>
+</html>
