@@ -40,35 +40,31 @@ export interface RangePx {
 export class VisStr {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
-  private str_x: number;
-  private str_y: number;
-  private font_size: number;
-  private font_size_half: number;
-  private font_type: string;
+  private strX: number;
+  private strY: number;
+  private fontSize: number;
+  private fontSizeHalf: number;
+  private fontType: string;
   /** The offset to start drawing a range from a center position of an index. */
-  private range_beg_offset: number;
-  private range_end_offset: number;
+  private rangeBegOffset: number;
+  private rangeEndOffset: number;
 
   /**
    *
    * @param canvas HTMLCanvasElement
-   * @param font_size font size
-   * @param font_type font name
+   * @param fontSize font size
+   * @param fontType font name
    */
-  constructor(
-    canvas: HTMLCanvasElement,
-    font_size = 32,
-    font_type = "Courier",
-  ) {
+  constructor(canvas: HTMLCanvasElement, fontSize = 32, fontType = "Courier") {
     this.canvas = canvas;
-    this.font_size = font_size;
-    this.font_size_half = this.font_size / 2;
-    this.font_type = font_type;
+    this.fontSize = fontSize;
+    this.fontSizeHalf = this.fontSize / 2;
+    this.fontType = fontType;
     this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-    this.str_x = this.font_size;
-    this.str_y = this.font_size * 2 + this.font_size_half;
-    this.range_beg_offset = -this.font_size / 4;
-    this.range_end_offset = this.font_size / 4;
+    this.strX = this.fontSize;
+    this.strY = this.fontSize * 2 + this.fontSizeHalf;
+    this.rangeBegOffset = -this.fontSize / 4;
+    this.rangeEndOffset = this.fontSize / 4;
   }
 
   /** Clear the canvas. */
@@ -83,7 +79,7 @@ export class VisStr {
    * @return The x-coordinate of a range beginning at `idx`
    */
   rangeBeg(idx: number): number {
-    return this.str_x + this.font_size * idx + this.range_beg_offset;
+    return this.strX + this.fontSize * idx + this.rangeBegOffset;
   }
 
   /**
@@ -93,7 +89,7 @@ export class VisStr {
    * @return The x-coordinate of a range ending at `idx`
    */
   rangeEnd(idx: number): number {
-    return this.str_x + this.font_size * idx + this.range_end_offset;
+    return this.strX + this.fontSize * idx + this.rangeEndOffset;
   }
 
   /**
@@ -101,9 +97,7 @@ export class VisStr {
    * @param r A range.
    */
   rangeHeight(r: Range): number {
-    return r.style === "str"
-      ? this.font_size
-      : Math.round(this.font_size * 0.5);
+    return r.style === "str" ? this.fontSize : Math.round(this.fontSize * 0.5);
   }
 
   /**
@@ -144,7 +138,7 @@ export class VisStr {
    * Return the length of a beginning (or ending) part of a range.
    */
   curve_d(): number {
-    return this.font_size_half / 2;
+    return this.fontSizeHalf / 2;
   }
 
   /**
@@ -210,14 +204,14 @@ export class VisStr {
     const rstr = r.str as string[];
     for (let i = 0; i < rstr.length; i++) {
       const c = rstr[i];
-      const cx = this.str_x + (r.beg + i) * this.font_size;
-      this.ctx.fillText(c, cx, y + this.font_size * 0.3, this.font_size);
+      const cx = this.strX + (r.beg + i) * this.fontSize;
+      this.ctx.fillText(c, cx, y + this.fontSize * 0.3, this.fontSize);
       this.ctx.beginPath();
       this.ctx.rect(
-        cx - this.font_size_half,
-        y - this.font_size_half,
-        this.font_size,
-        this.font_size,
+        cx - this.fontSizeHalf,
+        y - this.fontSizeHalf,
+        this.fontSize,
+        this.fontSize,
       );
       this.ctx.stroke();
     }
@@ -244,7 +238,7 @@ export class VisStr {
       this.drawRangePx(rpx);
     } else {
       for (let cur = r.beg + r.step - 1; cur < r.end; cur += r.step) {
-        rpx.x_end = this.str_x + this.font_size * cur + this.font_size_half;
+        rpx.x_end = this.strX + this.fontSize * cur + this.fontSizeHalf;
         this.drawRangePx(rpx);
         rpx.x_beg = rpx.x_end;
       }
@@ -253,7 +247,7 @@ export class VisStr {
         this.drawRangePx(rpx);
       } else {
         // There is an uncomplete range.
-        rpx.x_end = this.str_x + this.font_size * r.end + this.font_size_half;
+        rpx.x_end = this.strX + this.fontSize * r.end + this.fontSizeHalf;
         rpx.style = r.style.split(",")[0] + ",line";
         this.drawRangePx(rpx);
       }
@@ -262,11 +256,11 @@ export class VisStr {
 
   /**
    * Draw ranges.
-   * @param range_rows Ranges to draw.
+   * @param rangeRows Ranges to draw.
    */
-  drawRanges(range_rows: Range[][]) {
-    let ypx = this.str_y;
-    for (const ranges of range_rows) {
+  drawRanges(rangeRows: Range[][]) {
+    let ypx = this.strY;
+    for (const ranges of rangeRows) {
       const height = Math.max(...ranges.map((r) => this.rangeHeight(r)));
       for (const range of ranges) {
         this.drawRange(range, ypx + height / 2);
@@ -278,45 +272,45 @@ export class VisStr {
   /**
    * Draw an input string.
    */
-  drawInputStr(input_str: string) {
+  drawInputStr(inputStr: string) {
     const index = ["i"];
-    for (let i = 0; i < input_str.length; i++) index.push("" + i);
+    for (let i = 0; i < inputStr.length; i++) index.push("" + i);
     const r = {
       style: "str",
       color: "#000000",
       beg: -1,
-      end: input_str.length - 1,
+      end: inputStr.length - 1,
       str: index,
     };
-    this.drawRange(r, this.str_y - this.font_size - this.font_size_half);
+    this.drawRange(r, this.strY - this.fontSize - this.fontSizeHalf);
     const chars = ["Str"];
-    for (let i = 0; i < input_str.length; i++)
-      chars.push(input_str.substring(i, i + 1));
+    for (let i = 0; i < inputStr.length; i++)
+      chars.push(inputStr.substring(i, i + 1));
     r.str = chars;
-    this.drawRange(r, this.str_y - this.font_size_half);
+    this.drawRange(r, this.strY - this.fontSizeHalf);
   }
 
   /**
    * Draw a given string and ranges.
-   * @param input_str Input string to draw.
-   * @param rss The ranges to draw which are related to a given string `input_str`
+   * @param inputStr Input string to draw.
+   * @param rss The ranges to draw which are related to a given string `inputStr`
    */
-  draw(input_str: string, rss: Range[][]) {
-    let range_bound = [-1, input_str.length - 1];
+  draw(inputStr: string, rss: Range[][]) {
+    let rangeBound = [-1, inputStr.length - 1];
     rss.forEach((rs) =>
       rs.forEach(
         (r) =>
-          (range_bound = [
-            Math.min(range_bound[0], r.beg),
-            Math.max(range_bound[1], r.end),
+          (rangeBound = [
+            Math.min(rangeBound[0], r.beg),
+            Math.max(rangeBound[1], r.end),
           ]),
       ),
     );
-    this.str_x = this.font_size + Math.abs(range_bound[0]) * this.font_size;
-    this.canvas.width = (range_bound[1] - range_bound[0] + 2) * this.font_size;
+    this.strX = this.fontSize + Math.abs(rangeBound[0]) * this.fontSize;
+    this.canvas.width = (rangeBound[1] - rangeBound[0] + 2) * this.fontSize;
     this.canvas.height =
-      this.str_y +
-      this.font_size_half +
+      this.strY +
+      this.fontSizeHalf +
       rss.reduce(
         (acm, rs) => acm + Math.max(...rs.map((r) => this.rangeHeight(r))),
         0,
@@ -332,8 +326,8 @@ export class VisStr {
     this.canvas.style.height = this.canvas.height / dpr + "px";
     this.ctx.textAlign = "center";
     this.ctx.lineWidth = 3;
-    this.ctx.font = this.font_size + "px " + this.font_type;
-    this.drawInputStr(input_str);
+    this.ctx.font = this.fontSize + "px " + this.fontType;
+    this.drawInputStr(inputStr);
     this.drawRanges(rss);
   }
 
@@ -360,11 +354,11 @@ export class VisStr {
     let rows: T[] = [];
     for (const t of Ts) {
       // check whether or not a range can be inserted to the current row.
-      let used_any = false;
+      let usedAny = false;
       for (let i = rangef(t)[0]; i <= rangef(t)[1]; i++) {
-        used_any = used_any || used[i];
+        usedAny = usedAny || used[i];
       }
-      if (used_any) {
+      if (usedAny) {
         res.push(rows);
         rows = [t];
         used.fill(false);
@@ -418,12 +412,12 @@ export class VisStr {
    */
   makeRanges(ranges: RangeSimple[], style: string, color: string): Range[] {
     return ranges.map((range) => {
-      const is_str =
+      const isStr =
         typeof range[2] !== "undefined" && typeof range[2] !== "number";
       const step = typeof range[2] === "number" ? range[2] : undefined;
       const str = typeof range[2] !== "number" ? range[2] : undefined;
       return {
-        style: is_str ? "str" : style,
+        style: isStr ? "str" : style,
         color,
         beg: range[0],
         end: range[1],

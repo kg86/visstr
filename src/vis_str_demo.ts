@@ -12,47 +12,47 @@ const radioValue = (selector: string): string => {
 
 const draw = (_e: Event) => {
   // get font size
-  const font_size = parseInt(radioValue("[name=font_size]"));
+  const fontSize = parseInt(radioValue("[name=font_size]"));
   // get line style
-  let range_style = radioValue("[name=line_style]");
-  const line_style_right = radioValue("[name=line_style_right]");
+  let rangeStyle = radioValue("[name=line_style]");
+  const lineStyleRight = radioValue("[name=line_style_right]");
 
-  range_style += line_style_right.length === 0 ? "" : "," + line_style_right;
+  rangeStyle += lineStyleRight.length === 0 ? "" : "," + lineStyleRight;
   const visualize = radioValue("[name=visualize]");
 
   // get input string
   const elm = document.querySelector("#input_str") as HTMLInputElement;
-  const input_str = elm.value;
+  const inputStr = elm.value;
 
   // get canvas
   const canvas = document.querySelector("#canvas") as HTMLCanvasElement;
   // canvas.width = window.innerWidth - 50
-  const visStr = new VisStr(canvas, font_size);
+  const visStr = new VisStr(canvas, fontSize);
 
   // compute ranges
   let rangesp: RangeSimple[] = [];
-  let ranges_group: RangeSimple[][] = [];
+  let rangesGroup: RangeSimple[][] = [];
   let ranges: Range[][] = [];
 
-  const show_effective_alphabet = (
+  const showEffectiveAlphabet = (
     document.getElementById("effective_alphabet") as HTMLInputElement
   ).checked;
-  const show_rank_array = (
+  const showRankArray = (
     document.getElementById("rank_array") as HTMLInputElement
   ).checked;
 
-  if (show_effective_alphabet) {
-    ranges_group.push([
+  if (showEffectiveAlphabet) {
+    rangesGroup.push([
       [
         -1,
-        input_str.length - 1,
-        ["eStr", ...strlib.replaceEffectiveAlphabet(input_str)],
+        inputStr.length - 1,
+        ["eStr", ...strlib.replaceEffectiveAlphabet(inputStr)],
       ],
     ] as RangeSimple[]);
   }
-  if (show_rank_array) {
-    ranges_group.push([
-      [-1, input_str.length - 1, ["rank", ...strlib.rankArray(input_str)]],
+  if (showRankArray) {
+    rangesGroup.push([
+      [-1, inputStr.length - 1, ["rank", ...strlib.rankArray(inputStr)]],
     ] as RangeSimple[]);
   }
 
@@ -64,52 +64,52 @@ const draw = (_e: Event) => {
     visualize === "lmostsquares"
   ) {
     if (visualize === "runs") {
-      rangesp = strlib.enumRuns(input_str) as RangeSimple[];
+      rangesp = strlib.enumRuns(inputStr) as RangeSimple[];
     } else if (visualize === "palindromes") {
-      rangesp = strlib.enumPalindromes(input_str) as RangeSimple[];
+      rangesp = strlib.enumPalindromes(inputStr) as RangeSimple[];
     } else if (visualize === "squares") {
-      rangesp = strlib.enumSquares(input_str) as RangeSimple[];
+      rangesp = strlib.enumSquares(inputStr) as RangeSimple[];
     } else if (visualize === "rmostsquares") {
-      rangesp = strlib.enumRightmostSquares(input_str) as RangeSimple[];
+      rangesp = strlib.enumRightmostSquares(inputStr) as RangeSimple[];
     } else if (visualize === "lmostsquares") {
-      rangesp = strlib.enumLeftmostSquares(input_str) as RangeSimple[];
+      rangesp = strlib.enumLeftmostSquares(inputStr) as RangeSimple[];
     }
-    ranges_group = ranges_group.concat(visStr.nonOverlapRangesSimple(rangesp));
-    ranges = visStr.makeGroupRangesAutoColor(ranges_group, range_style);
+    rangesGroup = rangesGroup.concat(visStr.nonOverlapRangesSimple(rangesp));
+    ranges = visStr.makeGroupRangesAutoColor(rangesGroup, rangeStyle);
   } else {
     if (visualize === "lpf")
-      ranges_group = ranges_group.concat(strlib.enumPrevOccLPF(input_str));
+      rangesGroup = rangesGroup.concat(strlib.enumPrevOccLPF(inputStr));
     else if (visualize === "left_maximal")
-      ranges_group = ranges_group.concat(
-        strlib.enumIfGroup(input_str, strlib.isLeftMaximal),
+      rangesGroup = rangesGroup.concat(
+        strlib.enumIfGroup(inputStr, strlib.isLeftMaximal),
       );
     else if (visualize === "right_maximal")
-      ranges_group = ranges_group.concat(
-        strlib.enumIfGroup(input_str, strlib.isRightMaximal),
+      rangesGroup = rangesGroup.concat(
+        strlib.enumIfGroup(inputStr, strlib.isRightMaximal),
       );
     else if (visualize === "max_repeat")
-      ranges_group = ranges_group.concat(
-        strlib.enumIfGroup(input_str, strlib.isMaxRepeat),
+      rangesGroup = rangesGroup.concat(
+        strlib.enumIfGroup(inputStr, strlib.isMaxRepeat),
       );
     else if (visualize === "lz77")
-      ranges_group = ranges_group.concat(strlib.lz77(input_str));
+      rangesGroup = rangesGroup.concat(strlib.lz77(inputStr));
     else if (visualize === "lz78")
-      ranges_group = ranges_group.concat(strlib.lz78(input_str));
+      rangesGroup = rangesGroup.concat(strlib.lz78(inputStr));
     else if (visualize === "lyndon_factorization")
-      ranges_group = ranges_group.concat(strlib.lyndonFactorization(input_str));
+      rangesGroup = rangesGroup.concat(strlib.lyndonFactorization(inputStr));
     else if (visualize === "lyndon_array")
-      ranges_group = ranges_group.concat(strlib.lyndonArray(input_str));
+      rangesGroup = rangesGroup.concat(strlib.lyndonArray(inputStr));
     else if (visualize === "enum_lyndon")
-      ranges_group = ranges_group.concat(strlib.enumLyndon(input_str));
+      rangesGroup = rangesGroup.concat(strlib.enumLyndon(inputStr));
     else if (visualize === "prev_smaller_suffix")
-      ranges_group = ranges_group.concat(strlib.prevSmallerSuffixes(input_str));
+      rangesGroup = rangesGroup.concat(strlib.prevSmallerSuffixes(inputStr));
     else if (visualize === "next_smaller_suffix")
-      ranges_group = ranges_group.concat(strlib.nextSmallerSuffixes(input_str));
-    ranges = visStr.makeGroupRangesAutoColor(ranges_group, range_style);
+      rangesGroup = rangesGroup.concat(strlib.nextSmallerSuffixes(inputStr));
+    ranges = visStr.makeGroupRangesAutoColor(rangesGroup, rangeStyle);
     ranges = strlib.flat(ranges.map((x) => visStr.nonOverlapRanges(x)));
   }
 
-  visStr.draw(input_str, ranges);
+  visStr.draw(inputStr, ranges);
 };
 
 const selectorAddEvent = (
@@ -124,9 +124,9 @@ const selectorAddEvent = (
 };
 
 const main = () => {
-  const input_str = document.getElementById("input_str") as HTMLElement;
-  input_str.addEventListener("input", draw);
-  input_str.addEventListener("propertychange", draw);
+  const inputStr = document.getElementById("input_str") as HTMLElement;
+  inputStr.addEventListener("input", draw);
+  inputStr.addEventListener("propertychange", draw);
 
   // add event for radio buttons
   selectorAddEvent("[name=font_size]", "click", draw);
@@ -136,7 +136,7 @@ const main = () => {
   selectorAddEvent("[type=checkbox]", "click", draw);
 
   // draw initially.
-  input_str.dispatchEvent(
+  inputStr.dispatchEvent(
     new CustomEvent("propertychange", { detail: "init event" }),
   );
 };
