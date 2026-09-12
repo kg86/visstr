@@ -1,4 +1,4 @@
-import * as convert from 'color-convert'
+import convert from 'color-convert'
 
 /** The simple range representation for strings */
 export type RangeStr = [number, number, string[]]

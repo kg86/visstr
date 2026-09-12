@@ -2,11 +2,13 @@
   "compilerOptions": {
     "sourceMap": true,
     "strict": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
     "declaration": true,
     "target": "es6",
     "module": "CommonJS",
     "lib": ["es6", "dom"],
+    "rootDir": "src",
     "outDir": "lib",
     "types": ["jest"]
   },
