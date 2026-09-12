@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   tag:
@@ -30,3 +31,11 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git tag "v${{ steps.version.outputs.version }}"
           git push origin "v${{ steps.version.outputs.version }}"
+
+      - name: Trigger release workflow
+        # A tag pushed with the default GITHUB_TOKEN doesn't fire other
+        # workflows' `push` triggers, so dispatch release.yml explicitly
+        # (workflow_dispatch is exempt from that restriction).
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run release.yml --ref "v${{ steps.version.outputs.version }}"

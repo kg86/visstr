@@ -3,6 +3,12 @@ on:
   push:
     tags:
       - 'v*'
+  # tag-release.yml pushes the tag using the default GITHUB_TOKEN, and pushes
+  # made with that token don't trigger other workflows' `push` events (this
+  # restriction doesn't apply to workflow_dispatch), so it explicitly
+  # dispatches this workflow against the new tag instead of relying on the
+  # `push` trigger above.
+  workflow_dispatch:
 
 permissions:
   contents: write
