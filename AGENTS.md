@@ -1,39 +1,52 @@
 # AGENTS.md
 
-このリポジトリで作業する人間・AIエージェント向けの運用ルールです。
+Operating rules for humans and AI agents working in this repository.
 
-## ブランチ運用
+## Language
 
-- `main` に直接 commit / push しない。すべての変更は Pull Request 経由でマージする。
-- 作業用ブランチを切って PR を作成し、CI (`.github/workflows/build.yml`) が通ってからマージする。
-- 1つの PR はバージョンを上げない。バージョンアップとリリースは別プロセスとして扱う。
+- All documentation in this repository, and all documentation in source code
+  (comments, docstrings, etc.), must be written in English.
 
-## リリース運用 (npm publish)
+## Branching
 
-バージョンは **git タグ** で管理する。PR ごとに `package.json` の version を上げることはしない。
+- Never commit or push directly to `main`. All changes must be merged via
+  Pull Request.
+- Create a working branch, open a PR, and merge only after CI
+  (`.github/workflows/build.yml`) passes.
+- A single PR must not bump the version. Version bumps and releases are a
+  separate process.
 
-リリース手順:
+## Release process (npm publish)
 
-1. 複数の PR が `main` にマージされ、リリースしたい状態になったら、リリース担当者がローカルまたは `main` ブランチ上で以下を実行する。
+Versions are managed via **git tags**, not per-PR version bumps in
+`package.json`.
+
+Release steps:
+
+1. Once enough PRs have been merged into `main` to warrant a release, the
+   release owner runs the following on `main` (locally or via a release
+   branch/PR):
 
    ```sh
-   npm version patch   # または minor / major
+   npm version patch   # or minor / major
    git push origin main --follow-tags
    ```
 
-   これにより `package.json` の version が更新され、`vX.Y.Z` タグが作成・push される。
+   This updates the `package.json` version and creates/pushes a `vX.Y.Z`
+   tag.
 
-2. `vX.Y.Z` 形式のタグが push されると `.github/workflows/release.yml` が起動し、
-   ビルド・テスト後に `npm publish` を実行して npm レジストリに公開する。
+2. Pushing a `vX.Y.Z` tag triggers `.github/workflows/release.yml`, which
+   builds and tests the project, then runs `npm publish` to the npm
+   registry.
 
-3. バージョニングは [Semantic Versioning](https://semver.org/) に従う。
-   - `patch`: バグ修正のみ
-   - `minor`: 後方互換性のある機能追加
-   - `major`: 破壊的変更
+3. Versioning follows [Semantic Versioning](https://semver.org/):
+   - `patch`: bug fixes only
+   - `minor`: backwards-compatible feature additions
+   - `major`: breaking changes
 
-## その他
+## Other
 
-- CIワークフロー:
-  - `build.yml`: 全ブランチへの push で build/test を実行
-  - `gh-page.yml`: `main` への push で GitHub Pages をデプロイ
-  - `release.yml`: `v*` タグの push で npm publish を実行
+- CI workflows:
+  - `build.yml`: runs build/test on push to any branch
+  - `gh-page.yml`: deploys GitHub Pages on push to `main`
+  - `release.yml`: publishes to npm on push of a `v*` tag
