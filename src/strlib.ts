@@ -119,7 +119,7 @@ export const isRightmostSquare = (
   p: number,
 ): boolean => {
   if (!isSquare(s, beg, p)) return false;
-  return !s.includes(s.substr(beg, 2 * p), beg + 1);
+  return !s.includes(s.slice(beg, beg + 2 * p), beg + 1);
 };
 
 export const isLeftmostSquare = (
@@ -128,7 +128,7 @@ export const isLeftmostSquare = (
   p: number,
 ): boolean => {
   if (!isSquare(s, beg, p)) return false;
-  return !s.substr(0, beg + 2 * p - 1).includes(s.substr(beg, 2 * p));
+  return !s.slice(0, beg + 2 * p - 1).includes(s.slice(beg, beg + 2 * p));
 };
 
 export const enumRightmostSquares = (s: string): RangeSimple[] => {
@@ -302,7 +302,7 @@ export const enumLyndon = (str: string): RangeSimple[][] => {
   for (let len = 1; len <= str.length; len++) {
     const group: RangeSimple[] = [];
     for (let i = 0; i + len <= str.length; i++) {
-      const sub = str.substr(i, len);
+      const sub = str.slice(i, i + len);
       if (isLyndon(sub)) group.push([i, i + len - 1]);
     }
     if (group.length > 0) res.push(group);
@@ -376,7 +376,7 @@ export const replaceEffectiveAlphabet = (str: string): string[] => {
 };
 
 export const suffixArray = (str: string): number[] => {
-  const suffixes = [...Array(str.length).keys()].map((i) => str.substr(i));
+  const suffixes = [...Array(str.length).keys()].map((i) => str.slice(i));
   suffixes.sort();
   return suffixes.map((s) => str.length - s.length);
 };
