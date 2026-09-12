@@ -36,10 +36,20 @@ Release steps:
    tag.
 
 2. Pushing a `vX.Y.Z` tag triggers `.github/workflows/release.yml`, which
-   builds and tests the project, then runs `npm publish` to the npm
-   registry.
+   builds and tests the project, then runs `npm stage publish`. This
+   authenticates via npm's Trusted Publisher (OIDC) for this repo/workflow
+   and stages the version, but does not make it public yet.
 
-3. Versioning follows [Semantic Versioning](https://semver.org/):
+3. A maintainer must promote the staged version with 2FA:
+
+   ```sh
+   npm stage list visstr
+   npm stage approve <stage-id>
+   ```
+
+   Only after this step is the new version publicly available on npm.
+
+4. Versioning follows [Semantic Versioning](https://semver.org/):
    - `patch`: bug fixes only
    - `minor`: backwards-compatible feature additions
    - `major`: breaking changes
@@ -49,4 +59,5 @@ Release steps:
 - CI workflows:
   - `build.yml`: runs build/test on push to any branch
   - `gh-page.yml`: deploys GitHub Pages on push to `main`
-  - `release.yml`: publishes to npm on push of a `v*` tag
+  - `release.yml`: stages an npm publish on push of a `v*` tag; a maintainer
+    must still approve it with 2FA to make it public
