@@ -13,7 +13,7 @@ export const enumPalindromes = (str: string): RangeLine[] => {
   for (let len = 1; len <= n; len++) {
     for (let beg = 0; beg + len <= n; beg++) {
       if (isPalindrome(str.substring(beg, beg + len)))
-        res.push([beg, beg + len - 1]);
+        res.push([beg, beg + len]);
     }
   }
   return res;

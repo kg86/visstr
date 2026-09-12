@@ -19,9 +19,9 @@ export const enumRuns = (s: string): RangeSimple[] => {
         while (match < n && s[beg + (match % p)] == s[beg + match]) {
           match++;
         }
-        const key = beg + "," + (beg + match - 1);
+        const key = beg + "," + (beg + match);
         if (!rmap.has(key)) {
-          res.push([beg, beg + match - 1, p]);
+          res.push([beg, beg + match, p]);
           rmap.add(key);
         }
       }

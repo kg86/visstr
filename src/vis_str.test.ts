@@ -25,12 +25,12 @@ describe("rangeHeight", () => {
   const vs = makeVisStr(32);
 
   test("returns the full font size for the 'str' style", () => {
-    const r: Range = { style: "str", color: "#000000", beg: 0, end: 0 };
+    const r: Range = { style: "str", color: "#000000", beg: 0, end: 1 };
     expect(vs.rangeHeight(r)).toBe(32);
   });
 
   test("returns half the font size (rounded) for other styles", () => {
-    const r: Range = { style: "line", color: "#000000", beg: 0, end: 0 };
+    const r: Range = { style: "line", color: "#000000", beg: 0, end: 1 };
     expect(vs.rangeHeight(r)).toBe(Math.round(32 * 0.5));
   });
 });
@@ -111,6 +111,14 @@ describe("nonOverlapRangesSimple", () => {
         [4, 5],
       ],
     ]);
+  });
+
+  test("treats touching boundaries as non-overlapping (half-open end)", () => {
+    const rs: RangeSimple[] = [
+      [0, 2],
+      [2, 4],
+    ];
+    expect(vs.nonOverlapRangesSimple(rs)).toStrictEqual([rs]);
   });
 });
 

@@ -18,7 +18,7 @@ export const findAll = (str: string, pat: string): RangeSimple[] => {
   const res: RangeSimple[] = [];
   let pos = str.indexOf(pat);
   while (pos !== -1) {
-    res.push([pos, pos + m - 1]);
+    res.push([pos, pos + m]);
     pos = str.indexOf(pat, pos + 1);
   }
   return res;
