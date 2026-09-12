@@ -1,6 +1,30 @@
 import { Range, RangeSimple, VisStr } from "./vis_str";
 import * as strlib from "./strlib";
 
+/** Visualizations producing a flat, non-overlapping list of ranges. */
+const SIMPLE_VISUALIZERS: Record<string, (str: string) => RangeSimple[]> = {
+  runs: strlib.enumRuns,
+  palindromes: strlib.enumPalindromes,
+  squares: strlib.enumSquares,
+  rmostsquares: strlib.enumRightmostSquares,
+  lmostsquares: strlib.enumLeftmostSquares,
+};
+
+/** Visualizations already producing pre-grouped ranges. */
+const GROUP_VISUALIZERS: Record<string, (str: string) => RangeSimple[][]> = {
+  lpf: strlib.enumPrevOccLPF,
+  left_maximal: (str) => strlib.enumIfGroup(str, strlib.isLeftMaximal),
+  right_maximal: (str) => strlib.enumIfGroup(str, strlib.isRightMaximal),
+  max_repeat: (str) => strlib.enumIfGroup(str, strlib.isMaxRepeat),
+  lz77: strlib.lz77,
+  lz78: strlib.lz78,
+  lyndon_factorization: strlib.lyndonFactorization,
+  lyndon_array: strlib.lyndonArray,
+  enum_lyndon: strlib.enumLyndon,
+  prev_smaller_suffix: strlib.prevSmallerSuffixes,
+  next_smaller_suffix: strlib.nextSmallerSuffixes,
+};
+
 const radioValue = (selector: string): string => {
   let res = "";
   const elms = document.querySelectorAll<HTMLInputElement>(selector);
@@ -30,7 +54,6 @@ const draw = (_e: Event) => {
   const visStr = new VisStr(canvas, fontSize);
 
   // compute ranges
-  let rangesp: RangeSimple[] = [];
   let rangesGroup: RangeSimple[][] = [];
   let ranges: Range[][] = [];
 
@@ -56,55 +79,12 @@ const draw = (_e: Event) => {
     ] as RangeSimple[]);
   }
 
-  if (
-    visualize === "runs" ||
-    visualize === "palindromes" ||
-    visualize === "squares" ||
-    visualize === "rmostsquares" ||
-    visualize === "lmostsquares"
-  ) {
-    if (visualize === "runs") {
-      rangesp = strlib.enumRuns(inputStr) as RangeSimple[];
-    } else if (visualize === "palindromes") {
-      rangesp = strlib.enumPalindromes(inputStr) as RangeSimple[];
-    } else if (visualize === "squares") {
-      rangesp = strlib.enumSquares(inputStr) as RangeSimple[];
-    } else if (visualize === "rmostsquares") {
-      rangesp = strlib.enumRightmostSquares(inputStr) as RangeSimple[];
-    } else if (visualize === "lmostsquares") {
-      rangesp = strlib.enumLeftmostSquares(inputStr) as RangeSimple[];
-    }
+  if (visualize in SIMPLE_VISUALIZERS) {
+    const rangesp = SIMPLE_VISUALIZERS[visualize](inputStr);
     rangesGroup = rangesGroup.concat(visStr.nonOverlapRangesSimple(rangesp));
     ranges = visStr.makeGroupRangesAutoColor(rangesGroup, rangeStyle);
-  } else {
-    if (visualize === "lpf")
-      rangesGroup = rangesGroup.concat(strlib.enumPrevOccLPF(inputStr));
-    else if (visualize === "left_maximal")
-      rangesGroup = rangesGroup.concat(
-        strlib.enumIfGroup(inputStr, strlib.isLeftMaximal),
-      );
-    else if (visualize === "right_maximal")
-      rangesGroup = rangesGroup.concat(
-        strlib.enumIfGroup(inputStr, strlib.isRightMaximal),
-      );
-    else if (visualize === "max_repeat")
-      rangesGroup = rangesGroup.concat(
-        strlib.enumIfGroup(inputStr, strlib.isMaxRepeat),
-      );
-    else if (visualize === "lz77")
-      rangesGroup = rangesGroup.concat(strlib.lz77(inputStr));
-    else if (visualize === "lz78")
-      rangesGroup = rangesGroup.concat(strlib.lz78(inputStr));
-    else if (visualize === "lyndon_factorization")
-      rangesGroup = rangesGroup.concat(strlib.lyndonFactorization(inputStr));
-    else if (visualize === "lyndon_array")
-      rangesGroup = rangesGroup.concat(strlib.lyndonArray(inputStr));
-    else if (visualize === "enum_lyndon")
-      rangesGroup = rangesGroup.concat(strlib.enumLyndon(inputStr));
-    else if (visualize === "prev_smaller_suffix")
-      rangesGroup = rangesGroup.concat(strlib.prevSmallerSuffixes(inputStr));
-    else if (visualize === "next_smaller_suffix")
-      rangesGroup = rangesGroup.concat(strlib.nextSmallerSuffixes(inputStr));
+  } else if (visualize in GROUP_VISUALIZERS) {
+    rangesGroup = rangesGroup.concat(GROUP_VISUALIZERS[visualize](inputStr));
     ranges = visStr.makeGroupRangesAutoColor(rangesGroup, rangeStyle);
     ranges = strlib.flat(ranges.map((x) => visStr.nonOverlapRanges(x)));
   }
