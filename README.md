@@ -53,10 +53,10 @@ const s = "abaababaabaab";
 
 // create occurrences of aba.
 const occAba = [
-  [0, 2],
-  [3, 5],
-  [5, 7],
-  [8, 10],
+  [0, 3],
+  [3, 6],
+  [5, 8],
+  [8, 11],
 ];
 // add line style and color.
 const ranges = vstr.makeRanges(occAba, "arrow", "#ff0000");
