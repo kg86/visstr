@@ -2,7 +2,10 @@
   "name": "visstr",
   "version": "0.0.12",
   "description": "String Visualizer",
-  "repository": "github:kg86/visstr",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kg86/visstr.git"
+  },
   "homepage": "https://github.com/kg86/visstr",
   "license": "MIT",
   "author": "kg86",
