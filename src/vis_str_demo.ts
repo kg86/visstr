@@ -12,16 +12,13 @@ const radioValue = (selector: string): string => {
 
 const draw = (_e: Event) => {
   // get font size
-  let font_size = parseInt(radioValue("[name=font_size]"));
+  const font_size = parseInt(radioValue("[name=font_size]"));
   // get line style
   let range_style = radioValue("[name=line_style]");
   const line_style_right = radioValue("[name=line_style_right]");
 
   range_style += line_style_right.length === 0 ? "" : "," + line_style_right;
   const visualize = radioValue("[name=visualize]");
-  console.log(
-    `font_size=${font_size}, line_style=${range_style}, visualize=${visualize}`,
-  );
 
   // get input string
   const elm = document.querySelector("#input_str") as HTMLInputElement;
@@ -30,7 +27,7 @@ const draw = (_e: Event) => {
   // get canvas
   const canvas = document.querySelector("#canvas") as HTMLCanvasElement;
   // canvas.width = window.innerWidth - 50
-  const visStr = new VisStr(canvas, (font_size = font_size));
+  const visStr = new VisStr(canvas, font_size);
 
   // compute ranges
   let rangesp: RangeSimple[] = [];
@@ -77,11 +74,8 @@ const draw = (_e: Event) => {
     } else if (visualize === "lmostsquares") {
       rangesp = strlib.enumLeftmostSquares(input_str) as RangeSimple[];
     }
-    console.log("rangesp", rangesp);
     ranges_group = ranges_group.concat(visStr.nonOverlapRangesSimple(rangesp));
-    console.log("range_group", ranges_group);
     ranges = visStr.makeGroupRangesAutoColor(ranges_group, range_style);
-    console.log("rangesp", ranges);
   } else {
     if (visualize === "lpf")
       ranges_group = ranges_group.concat(strlib.enumPrevOccLPF(input_str));
