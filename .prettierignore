@@ -1,0 +1,8 @@
+node_modules
+lib
+docs
+dist
+coverage
+*.yml
+*.yaml
+package-lock.json
