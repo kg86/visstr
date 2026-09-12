@@ -98,19 +98,30 @@ export const isSquare = (s: string, beg: number, p: number): boolean => {
     return true;
 };
 
-export const enumSquares = (s: string): RangeSimple[] => {
+// Enumerates ranges [beg, beg + 2p - 1, p] over every period p and start
+// offset for which `isMatch` holds. This is the shared p-periodic search
+// skeleton used by squares / rightmost squares / leftmost squares, which
+// differ only in the predicate applied to each (beg, p) candidate.
+const enumPeriodicFactors = (
+    s: string,
+    isMatch: (s: string, beg: number, p: number) => boolean
+): RangeSimple[] => {
     const n = s.length;
     let res: RangeSimple[] = [];
     for (let p = 1; p < n; p++) {
         for (let offset = 0; offset < 2 * p; offset++) {
             for (let beg = offset; beg < n - 2 * p + 1; beg += 2 * p) {
-                if (isSquare(s, beg, p)) {
+                if (isMatch(s, beg, p)) {
                     res.push([beg, beg + 2 * p - 1, p]);
                 }
             }
         }
     }
     return res;
+};
+
+export const enumSquares = (s: string): RangeSimple[] => {
+    return enumPeriodicFactors(s, isSquare);
 };
 
 export const isRightmostSquare = (
@@ -132,33 +143,11 @@ export const isLeftmostSquare = (
 };
 
 export const enumRightmostSquares = (s: string): RangeSimple[] => {
-    const n = s.length;
-    let res: RangeSimple[] = [];
-    for (let p = 1; p < n; p++) {
-        for (let offset = 0; offset < 2 * p; offset++) {
-            for (let beg = offset; beg < n - 2 * p + 1; beg += 2 * p) {
-                if (isRightmostSquare(s, beg, p)) {
-                    res.push([beg, beg + 2 * p - 1, p]);
-                }
-            }
-        }
-    }
-    return res;
+    return enumPeriodicFactors(s, isRightmostSquare);
 };
 
 export const enumLeftmostSquares = (s: string): RangeSimple[] => {
-    const n = s.length;
-    let res: RangeSimple[] = [];
-    for (let p = 1; p < n; p++) {
-        for (let offset = 0; offset < 2 * p; offset++) {
-            for (let beg = offset; beg < n - 2 * p + 1; beg += 2 * p) {
-                if (isLeftmostSquare(s, beg, p)) {
-                    res.push([beg, beg + 2 * p - 1, p]);
-                }
-            }
-        }
-    }
-    return res;
+    return enumPeriodicFactors(s, isLeftmostSquare);
 };
 
 export const isRun = (s: string, beg: number, p: number): boolean => {
