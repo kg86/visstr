@@ -45,12 +45,12 @@ export const findAll = (str: string, pat: string): RangeSimple[] => {
 
 export const lcp = (str: string, i: number, j: number): number => {
   const n = str.length;
-  let match_len = 0;
-  while (i + match_len < n && j + match_len < n) {
-    if (str[i + match_len] == str[j + match_len]) match_len++;
+  let matchLen = 0;
+  while (i + matchLen < n && j + matchLen < n) {
+    if (str[i + matchLen] == str[j + matchLen]) matchLen++;
     else break;
   }
-  return match_len;
+  return matchLen;
 };
 
 export const prevOccLPF = (str: string): [number[], number[]] => {
@@ -226,7 +226,7 @@ export const isMaxRepeat = (str: string, pat: string): boolean => {
 
 export const lz77 = (
   str: string,
-  show_factorid: number = 1,
+  showFactorId: number = 1,
 ): RangeSimple[][] => {
   const n = str.length;
   const [occs, lens] = prevOccLPF(str);
@@ -244,17 +244,17 @@ export const lz77 = (
       ];
       i += lens[i];
     }
-    if (show_factorid >= 0) {
-      const last_end = ranges[ranges.length - 1][1];
-      ranges.push([last_end + 1, last_end + 1, ["f" + show_factorid]]);
-      show_factorid++;
+    if (showFactorId >= 0) {
+      const lastEnd = ranges[ranges.length - 1][1];
+      ranges.push([lastEnd + 1, lastEnd + 1, ["f" + showFactorId]]);
+      showFactorId++;
     }
     res.push(ranges);
   }
   return res;
 };
 
-export const lz78 = (str: string, show_factorid = 1): RangeSimple[][] => {
+export const lz78 = (str: string, showFactorId = 1): RangeSimple[][] => {
   const d = new Map<string, number>();
   const res: RangeSimple[][] = [];
   for (let i = 0; i < str.length;) {
@@ -269,11 +269,11 @@ export const lz78 = (str: string, show_factorid = 1): RangeSimple[][] => {
       row.push([i, j - 2]);
     }
     if (j < str.length) {
-      row.push([j - 1, j, [str[j - 1], "f" + show_factorid]]);
+      row.push([j - 1, j, [str[j - 1], "f" + showFactorId]]);
     } else {
-      row.push([j - 1, j - 1, ["f" + show_factorid]]);
+      row.push([j - 1, j - 1, ["f" + showFactorId]]);
     }
-    show_factorid++;
+    showFactorId++;
     res.push(row);
     d.set(str.substring(i, j), i);
     i = j;
@@ -343,9 +343,9 @@ export const lyndonFactorization = (str: string): RangeSimple[][] => {
 
   while (beg < str.length) {
     const factor = findLongestLyndonFactor(str, beg);
-    const len_factor = factor[0] * factor[1];
-    res.push([[beg, beg + len_factor - 1, factor[0]]] as RangeSimple[]);
-    beg += len_factor;
+    const lenFactor = factor[0] * factor[1];
+    res.push([[beg, beg + lenFactor - 1, factor[0]]] as RangeSimple[]);
+    beg += lenFactor;
   }
   return res;
 };
