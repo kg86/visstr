@@ -29,6 +29,7 @@ jobs:
         mv others public/
         mv _config.yml public/
         mv README.md public/
+        sed 's#src="./vis_str_demo.js"#src="./dist/vis_str_demo.js"#' public/dist/vis_str_demo.html > public/index.html
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v4
